@@ -1,0 +1,17 @@
+# Ignore all files by default
+*
+
+# Allow directories so exceptions can be matched
+!*/
+
+# Keep gitignore itself
+!.gitignore
+!.gitattributes
+
+# Allow only TeX, PDF, BibTeX, and image files
+!*.tex
+!*.pdf
+!*.bib
+!*.png
+!*.jpg
+!*.jpeg
