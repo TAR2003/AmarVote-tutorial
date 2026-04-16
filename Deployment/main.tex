@@ -1,0 +1,179 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+
+% Colors for code blocks
+\definecolor{codegray}{rgb}{0.95,0.95,0.95}
+\definecolor{codeblue}{rgb}{0.1,0.2,0.8}
+\definecolor{codegreen}{rgb}{0.1,0.6,0.1}
+
+\lstset{
+    backgroundcolor=\color{codegray},
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{codeblue}\bfseries,
+    commentstyle=\color{codegreen},
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{lightgray},
+    keepspaces=true,
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    xleftmargin=15pt,
+    xrightmargin=5pt
+}
+
+\title{\textbf{Production Deployment Guide:\\ Cloudflare Strict SSL, Nginx, and Docker}}
+\author{Infrastructure Operations}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+This document outlines the standard operating procedure for deploying our web application behind a Cloudflare proxy using Full (Strict) SSL/TLS encryption. This architecture ensures that traffic is encrypted not only between the user and Cloudflare, but also securely authenticated between Cloudflare and our Origin Server.
+
+\section{Cloudflare Configuration}
+
+\subsection{DNS and Nameservers}
+To route traffic through Cloudflare's network, the domain must use Cloudflare's nameservers.
+\begin{enumerate}
+    \item Add your domain to the Cloudflare dashboard.
+    \item Cloudflare will assign two nameservers (e.g., \texttt{ns1.cloudflare.com}).
+    \item Log into your domain registrar's platform and replace the existing nameservers with the Cloudflare-provided ones.
+    \item \textbf{Wait for propagation:} DNS propagation can take up to an hour. Cloudflare will send a confirmation email once verified.
+\end{enumerate}
+
+\subsection{Enabling Full (Strict) SSL}
+By default, Cloudflare might use ``Flexible'' or ``Full'' SSL. We require \textbf{Full (Strict)}.
+\begin{itemize}
+    \item Navigate to \textbf{SSL/TLS $\rightarrow$ Overview}.
+    \item Select \textbf{Full (Strict)}. 
+    \item \textbf{Why?} This mode ensures Cloudflare enforces validation of the origin server's certificate. It prevents Man-in-the-Middle (MitM) attacks between the Cloudflare Edge and your VM.
+\end{itemize}
+
+\subsection{Generating Origin Certificates}
+\begin{enumerate}
+    \item Go to \textbf{SSL/TLS $\rightarrow$ Origin Server}.
+    \item Click \textbf{Create Certificate}.
+    \item Leave the default RSA setting and generate the certificate.
+    \item You will be presented with an \textbf{Origin Certificate} and a \textbf{Private Key}. Keep this tab open or save them securely; the private key will never be shown again.
+\end{enumerate}
+
+\section{Server Preparation}
+
+\subsection{Port Configuration}
+Before connecting via SSH, ensure the cloud provider's firewall (Security Groups) allows inbound traffic on ports \texttt{80} (HTTP) and \texttt{443} (HTTPS). \textbf{Note:} Some enterprise networks or cloud providers block TLS handshakes by default; ensure Deep Packet Inspection (DPI) rules allow port 443 handshakes.
+
+\subsection{Connecting via SSH}
+Connect to your instance using your credentials:
+\begin{lstlisting}[language=bash]
+ssh your_username@YOUR_SERVER_IP
+\end{lstlisting}
+
+\section{Certificate Management on the Origin}
+We must replicate the certificate structure that the Nginx Docker container expects.
+
+\subsection{Creating Directories}
+Create the necessary folder structure:
+\begin{lstlisting}[language=bash]
+mkdir -p ~/app/nginx/certs/cloudflare
+\end{lstlisting}
+
+\subsection{Downloading Cloudflare Root CA and DH Parameters}
+Nginx requires the Cloudflare Root CA to verify trusted connections, and Diffie-Hellman parameters for Perfect Forward Secrecy.
+\begin{lstlisting}[language=bash]
+# Download Cloudflare Origin RSA Root Certificate
+wget https://developers.cloudflare.com/ssl/static/origin_ca_rsa_root.pem -O ~/app/nginx/certs/cloudflare/cloudflare-ca.pem
+
+# Generate DH parameters (This may take a few minutes)
+openssl dhparam -out ~/app/nginx/certs/dhparam.pem 2048
+\end{lstlisting}
+
+\subsection{Saving the Origin Certificate and Key}
+Using the certificates generated in the Cloudflare dashboard:
+\begin{lstlisting}[language=bash]
+nano ~/app/nginx/certs/cloudflare/origin-bundle.pem
+\end{lstlisting}
+\textit{Paste the Origin Certificate, then save (Ctrl+O, Enter, Ctrl+X).}
+
+\begin{lstlisting}[language=bash]
+nano ~/app/nginx/certs/cloudflare/origin-key.pem
+\end{lstlisting}
+\textit{Paste the Private Key, then save.}
+
+Secure the private key so it cannot be read by unauthorized users:
+\begin{lstlisting}[language=bash]
+chmod 600 ~/app/nginx/certs/cloudflare/origin-key.pem
+\end{lstlisting}
+
+\section{Firewall Hardening (UFW)}
+To maximize security, we must ensure that \textit{only} Cloudflare can access ports 80 and 443. If we leave them open to the world, attackers can scan the internet, find our origin IP, and bypass Cloudflare's Web Application Firewall (WAF) and Rate Limiting entirely.
+
+Run the following commands to lock down the ports to Cloudflare's IPv4 ranges:
+\begin{lstlisting}[language=bash]
+# Allow HTTP from Cloudflare IPs
+for ip in `curl -s https://www.cloudflare.com/ips-v4`; do sudo ufw allow from $ip to any port 80; done
+
+# Allow HTTPS from Cloudflare IPs
+for ip in `curl -s https://www.cloudflare.com/ips-v4`; do sudo ufw allow from $ip to any port 443; done
+
+# Reload UFW to apply rules
+sudo ufw reload
+\end{lstlisting}
+
+\section{Nginx Configuration \& Rate Limiting}
+Our \texttt{nginx-proxy.conf} is strictly configured to protect the application backend from DDoS and brute force attacks using defined limit zones. 
+
+\subsection{Rate Limit Zones}
+The following zones are defined in the Nginx configuration:
+\begin{itemize}
+    \item \texttt{api\_limit (10r/s)}: Limits standard API requests to 10 per second per IP. A burst of 20 is allowed. If a frontend application (like a Key Ceremony status check) polls too quickly, it may trigger a block. Adjusting this to \texttt{10r/s} (from a stricter \texttt{30r/m}) prevents false positives during rapid polling.
+    \item \texttt{auth\_limit (10r/m)}: Extremely strict. Limits authentication endpoints (login, register, password) to 10 requests per \textit{minute}. This halts brute-force credential stuffing attacks.
+    \item \texttt{global\_limit (100r/s)}: A general limit for all traffic across the server to prevent volumetric attacks.
+    \item \texttt{conn\_limit (20)}: Limits maximum concurrent connections per IP to 20.
+\end{itemize}
+
+When limits are exceeded, Nginx is instructed to return a standard \texttt{429 Too Many Requests} rather than a confusing \texttt{503 Service Unavailable}:
+\begin{lstlisting}[language=bash]
+limit_req_status 429;
+\end{lstlisting}
+
+\subsection{Security Headers and Caching}
+The Nginx configuration also enforces modern security standards:
+\begin{itemize}
+    \item \textbf{HSTS (Strict-Transport-Security)}: Forces browsers to always use HTTPS.
+    \item \textbf{Content-Security-Policy (CSP)}: Prevents Cross-Site Scripting (XSS) by restricting where scripts, styles, and images can be loaded from.
+    \item \textbf{Static Caching}: Caches assets (js, css, images) aggressively (\texttt{max-age=31536000}) to offload work from the server.
+\end{itemize}
+
+\section{Automated Deployment}
+With the infrastructure prepared, deployment is fully automated via GitHub Actions (\texttt{docker-deploy.yml}).
+
+Before deployment, copy your local \texttt{.env} file to the cloud VM home folder (\texttt{\textasciitilde/}) so the deployer can automatically move it into the project directory during deployment.
+
+When code is pushed to the \texttt{main} branch, the pipeline will:
+\begin{enumerate}
+    \item Sync files to the VM using \texttt{rsync}.
+    \item Copy the home \texttt{.env} file into the app directory.
+    \item Tear down old containers and rebuild images.
+    \item Spin up the stack using Docker Compose.
+\end{enumerate}
+
+Because the Cloudflare certificates are mapped directly to the \texttt{/etc/letsencrypt/cloudflare} paths inside the Nginx container, Nginx will automatically recognize them on boot and establish the secure HTTPS connection to Cloudflare immediately.
+
+\section{Local Development Compose Files}
+For development and local testing, use the base \texttt{docker-compose.yml} file. This compose file is configured for development versions of the services and exposes the application over HTTP on port 80.
+
+If you want to test the production service stack without configuring HTTPS, use \texttt{docker-compose.local.yml}. This file uses the production service definitions from the main production compose configuration, but switches to HTTP so you can run the stack locally without setting up TLS.
+
+\end{document}
