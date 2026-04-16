@@ -1,0 +1,915 @@
+\documentclass[12pt,a4paper]{book}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{amssymb}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\input{icon-fallback.tex}
+\usepackage{tikz}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{longtable}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+% ─── Colours ─────────────────────────────────────────────────────────────────
+\definecolor{adminred}{HTML}{7B2D2D}
+\definecolor{adminaccent}{HTML}{C0392B}
+\definecolor{coverbg}{HTML}{1A0A0A}
+\definecolor{lightgray}{HTML}{F5F7FA}
+\definecolor{warningyellow}{HTML}{FFF3CD}
+\definecolor{warningborder}{HTML}{FBBF24}
+\definecolor{successgreen}{HTML}{D1FAE5}
+\definecolor{successborder}{HTML}{10B981}
+\definecolor{infoblue}{HTML}{DBEAFE}
+\definecolor{infoborder}{HTML}{3B82F6}
+\definecolor{dangered}{HTML}{FEE2E2}
+\definecolor{dangerborder}{HTML}{EF4444}
+\definecolor{sectiongray}{HTML}{6B7280}
+\definecolor{stepbg}{HTML}{FFF8F8}
+
+\hypersetup{
+  colorlinks=true, linkcolor=adminred,
+  urlcolor=adminaccent, citecolor=adminaccent,
+  pdftitle={AmarVote --- Administrator Guide},
+}
+
+\tcbset{
+  notebox/.style={enhanced,breakable,colback=infoblue,colframe=infoborder,
+    fonttitle=\bfseries\color{adminred},title={\faInfoCircle\quad Note},
+    left=6pt,right=6pt,top=4pt,bottom=4pt,arc=4pt},
+  warnbox/.style={enhanced,breakable,colback=warningyellow,colframe=warningborder,
+    fonttitle=\bfseries\color{orange!80!black},title={\faExclamationTriangle\quad Important},
+    left=6pt,right=6pt,top=4pt,bottom=4pt,arc=4pt},
+  tipbox/.style={enhanced,breakable,colback=successgreen,colframe=successborder,
+    fonttitle=\bfseries\color{green!50!black},title={\faLightbulb\quad Tip},
+    left=6pt,right=6pt,top=4pt,bottom=4pt,arc=4pt},
+  dangerbox/.style={enhanced,breakable,colback=dangered,colframe=dangerborder,
+    fonttitle=\bfseries\color{red!70!black},title={\faTimesCircle\quad Warning},
+    left=6pt,right=6pt,top=4pt,bottom=4pt,arc=4pt},
+  stepbox/.style={enhanced,breakable,colback=stepbg,colframe=adminred,
+    fonttitle=\bfseries\color{white},
+    attach boxed title to top left={xshift=10pt,yshift=-\tcboxedtitleheight/2},
+    boxed title style={colback=adminred,arc=3pt},
+    left=6pt,right=6pt,top=14pt,bottom=4pt,arc=4pt},
+}
+
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{adminred}}
+  {\chaptertitlename\ \thechapter}{12pt}{\Huge}
+\titlespacing{\chapter}{0pt}{-10pt}{20pt}
+\titleformat{\section}{\normalfont\Large\bfseries\color{adminred}}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{adminaccent}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries\color{sectiongray}}{\thesubsubsection}{1em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\small\thepage}
+\fancyhead[LO]{\small\nouppercase{\rightmark}}
+\fancyhead[RE]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\small\color{sectiongray}AmarVote --- Administrator Guide}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlist[itemize,1]{label=\textcolor{adminaccent}{\faChevronRight},leftmargin=1.5em}
+\setlist[itemize,2]{label=\textcolor{sectiongray}{\faCircle},leftmargin=2em}
+\setlist[enumerate,1]{label=\textcolor{adminred}{\textbf{\arabic*.}},leftmargin=2em}
+
+\newcommand{\uibutton}[1]{\colorbox{adminred}{\textcolor{white}{\small\textbf{#1}}}}
+\newcommand{\uifield}[1]{\texttt{\color{adminaccent}#1}}
+\newcommand{\uimenu}[1]{\textbf{\color{adminred}#1}}
+
+\setstretch{1.15}
+
+\begin{document}
+
+% ─── COVER ───────────────────────────────────────────────────────────────────
+\begin{titlepage}
+\pagecolor{coverbg}
+\color{white}
+\centering
+\vspace*{1.5cm}
+
+{\fontsize{55}{60}\selectfont\bfseries AmarVote}
+
+\vspace{0.4cm}
+{\large\color{adminaccent} Secure Cryptographic Voting Platform}
+
+\vspace{1.5cm}
+\hrule width 13cm height 0.5pt
+\vspace{0.5cm}
+{\LARGE\bfseries \faCog\quad Administrator Guide}
+\vspace{0.5cm}
+\hrule width 13cm height 0.5pt
+
+\vspace{2cm}
+
+\begin{tcolorbox}[
+  enhanced,width=11cm,
+  colback=adminred!30!black,colframe=adminaccent,
+  arc=6pt,boxrule=1.5pt,left=14pt,right=14pt,top=10pt,bottom=10pt
+]
+\centering\color{white}
+\textbf{Sections covered in this guide:}\\[8pt]
+\textcolor{adminaccent}{\faUserShield} \, Account Registration \\[4pt]
+\textcolor{adminaccent}{\faPlusCircle} \, Creating \& Configuring Elections\\[4pt]
+\textcolor{adminaccent}{\faCalendarAlt} \, Scheduling Elections (Phase 3)\\[4pt]
+\textcolor{adminaccent}{\faChartBar} \, Initiating the Tally Process\\[4pt]
+\textcolor{adminaccent}{\faLayerGroup} \, Combining Decryption Shares\\[4pt]
+\textcolor{adminaccent}{\faSearch} \, Monitoring \& Audit Tools
+\end{tcolorbox}
+
+\vfill
+{\small\color{sectiongray} Version 1.0 \quad|\quad \today}
+\end{titlepage}
+\nopagecolor\color{black}
+
+\frontmatter
+\tableofcontents
+\clearpage
+
+\chapter*{Introduction for Administrators}
+\addcontentsline{toc}{chapter}{Introduction for Administrators}
+
+Welcome to the AmarVote Administrator Guide. This document explains how to create, schedule, and manage elections while maintaining security and verifiability.
+
+\begin{tcolorbox}[notebox]
+\textbf{Key idea:} Administrators can manage the election, but they cannot decrypt ballots alone. Guardians hold the cryptographic keys.
+\end{tcolorbox}
+
+\mainmatter
+
+\chapter{Account Setup: Registration \& Login}
+
+To use AmarVote as an administrator, you must first register using an authorised email address and complete login security.
+
+\section{Registering Your Account}
+
+\begin{enumerate}
+  \item Open the AmarVote URL.
+  \item Click \uibutton{Register} or navigate to \texttt{/register}.
+  \item Enter your authorised email address.
+  \item Click \uibutton{Send Verification Code} and enter the code from your email.
+  \item Create a strong password and click \uibutton{Create Account}.
+\end{enumerate}
+
+\begin{tcolorbox}[dangerbox]
+Use a unique, strong password. Do not reuse credentials from other services.
+\end{tcolorbox}
+
+\section{Enabling Two-Factor Authentication}
+
+\begin{enumerate}
+  \item After login, open \uimenu{Profile Settings}.
+  \item Select \uibutton{Enable Two-Factor Authentication}.
+  \item Scan the QR code using a TOTP app.
+  \item Save the recovery codes in a secure place.
+\end{enumerate}
+
+\chapter{Creating and Configuring an Election}
+
+\section{Defining the Election}
+
+Administrators define election metadata, visibility, and candidate information.
+
+\begin{itemize}
+  \item \textbf{Election Name}: A short descriptive title.
+  \item \textbf{Description}: The purpose and scope of the election.
+  \item \textbf{Visibility}: Public or private.
+\end{itemize}
+
+\begin{tcolorbox}[tipbox]
+Keep the election name clear and the description concise. This makes it easier for voters to find the correct election.
+\end{tcolorbox}
+
+\section{Assigning Roles}
+
+Add Guardians and authorised voters before the election starts. Guardians participate in the key ceremony, while voters cast ballots.
+
+\chapter{Scheduling and Publishing}
+
+\section{Publishing the Election}
+
+After the key ceremony, schedule the election start and end times and click \uibutton{Publish Election}.
+
+\begin{center}
+\begin{tabularx}{0.9\textwidth}{lX}
+\toprule
+\rowcolor{adminred}\color{white} & \color{white}Action \\
+\midrule
+\rowcolor{lightgray}$\square$ & Notify all voters of the election dates and direct link \\
+$\square$ & Confirm guardians have securely stored their key files and passwords \\
+\rowcolor{lightgray}$\square$ & Inform guardians of the expected tally date \\
+$\square$ & Verify the election page displays correctly \\
+\rowcolor{lightgray}$\square$ & Test access with a sample voter account if available \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\chapter{During the Election}
+
+While the election is live, monitor turnout, ballot count, and election status.
+
+\section{What You Can Monitor}
+
+\begin{itemize}
+  \item \textbf{Ballot Count}: Number of encrypted ballots submitted.
+  \item \textbf{Voter Turnout}: Percentage of voters who have participated.
+  \item \textbf{Election Status}: Confirms the election is open or closed.
+\end{itemize}
+
+\chapter{After the Election}
+
+\section{Initiate the Tally}
+
+Once voting ends, begin the tally process and coordinate with Guardians for decryption.
+
+\begin{tcolorbox}[warnbox]
+Do not publish results until the tally is complete and all guardian decryption shares are combined.
+\end{tcolorbox}
+
+\end{document}
+\documentclass[12pt,a4paper]{book}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{amssymb}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\input{icon-fallback.tex}
+\usepackage{tikz}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{longtable}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+% ─── Colours ─────────────────────────────────────────────────────────────────
+\definecolor{adminred}{HTML}{7B2D2D}
+\definecolor{adminaccent}{HTML}{C0392B}
+\definecolor{coverbg}{HTML}{1A0A0A}
+\definecolor{lightgray}{HTML}{F5F7FA}
+\definecolor{warningyellow}{HTML}{FFF3CD}
+\definecolor{warningborder}{HTML}{FBBF24}
+\definecolor{successgreen}{HTML}{D1FAE5}
+\definecolor{successborder}{HTML}{10B981}
+\definecolor{infoblue}{HTML}{DBEAFE}
+\definecolor{infoborder}{HTML}{3B82F6}
+\definecolor{dangered}{HTML}{FEE2E2}
+\definecolor{dangerborder}{HTML}{EF4444}
+\definecolor{sectiongray}{HTML}{6B7280}
+\definecolor{stepbg}{HTML}{FFF8F8}
+
+\hypersetup{
+  colorlinks=true, linkcolor=adminred,
+  urlcolor=adminaccent, citecolor=adminaccent,
+  pdftitle={AmarVote --- Administrator Guide},
+}
+
+\tcbset{
+  notebox/.style={enhanced,breakable,colback=infoblue,colframe=infoborder,
+    fonttitle=\bfseries\color{adminred},title={\faInfoCircle\quad Note},
+    left=6pt,right=6pt,top=4pt,bottom=4pt,arc=4pt},
+  warnbox/.style={enhanced,breakable,colback=warningyellow,colframe=warningborder,
+    fonttitle=\bfseries\color{orange!80!black},title={\faExclamationTriangle\quad Important},
+    left=6pt,right=6pt,top=4pt,bottom=4pt,arc=4pt},
+  tipbox/.style={enhanced,breakable,colback=successgreen,colframe=successborder,
+    fonttitle=\bfseries\color{green!50!black},title={\faLightbulb\quad Tip},
+    left=6pt,right=6pt,top=4pt,bottom=4pt,arc=4pt},
+  dangerbox/.style={enhanced,breakable,colback=dangered,colframe=dangerborder,
+    fonttitle=\bfseries\color{red!70!black},title={\faTimesCircle\quad Warning},
+    left=6pt,right=6pt,top=4pt,bottom=4pt,arc=4pt},
+  stepbox/.style={enhanced,breakable,colback=stepbg,colframe=adminred,
+    fonttitle=\bfseries\color{white},
+    attach boxed title to top left={xshift=10pt,yshift=-\tcboxedtitleheight/2},
+    boxed title style={colback=adminred,arc=3pt},
+    left=6pt,right=6pt,top=14pt,bottom=4pt,arc=4pt},
+  phasebox/.style={enhanced,breakable,colback=lightgray,colframe=adminred,
+    fonttitle=\bfseries\color{white},
+    attach boxed title to top left={xshift=10pt,yshift=-\tcboxedtitleheight/2},
+    boxed title style={colback=adminaccent,arc=3pt},
+    left=6pt,right=6pt,top=14pt,bottom=4pt,arc=4pt},
+}
+
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{adminred}}
+  {\chaptertitlename\ \thechapter}{12pt}{\Huge}
+\titlespacing{\chapter}{0pt}{-10pt}{20pt}
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{adminred}}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{adminaccent}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{sectiongray}}{\thesubsubsection}{1em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\small\thepage}
+\fancyhead[LO]{\small\nouppercase{\rightmark}}
+\fancyhead[RE]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\small\color{sectiongray}AmarVote --- Administrator Guide}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlist[itemize,1]{label=\textcolor{adminaccent}{\faChevronRight},leftmargin=1.5em}
+\setlist[itemize,2]{label=\textcolor{sectiongray}{\faCircle[regular]},leftmargin=2em}
+\setlist[enumerate,1]{label=\textcolor{adminred}{\textbf{\arabic*.}},leftmargin=2em}
+
+\newcommand{\uibutton}[1]{\colorbox{adminred}{\textcolor{white}{\small\textbf{#1}}}}
+\newcommand{\uifield}[1]{\texttt{\color{adminaccent}#1}}
+\newcommand{\uimenu}[1]{\textbf{\color{adminred}#1}}
+
+\setstretch{1.15}
+
+\begin{document}
+
+% ─── COVER ───────────────────────────────────────────────────────────────────
+\begin{titlepage}
+\pagecolor{coverbg}
+\color{white}
+\centering
+\vspace*{1.5cm}
+
+{\fontsize{55}{60}\selectfont\bfseries AmarVote}
+
+\vspace{0.4cm}
+{\large\color{adminaccent} Secure Cryptographic Voting Platform}
+
+\vspace{1.5cm}
+\hrule width 13cm height 0.5pt
+\vspace{0.5cm}
+{\LARGE\bfseries \faCog\quad Administrator Guide}
+\vspace{0.5cm}
+\hrule width 13cm height 0.5pt
+
+\vspace{2cm}
+
+\begin{tcolorbox}[
+  enhanced, width=11cm,
+  colback=adminred!30!black, colframe=adminaccent,
+  arc=6pt, boxrule=1.5pt, left=14pt, right=14pt, top=10pt, bottom=10pt
+]
+\centering\color{white}
+\textbf{Sections covered in this guide:}\\[8pt]
+\textcolor{adminaccent}{\faUserShield} \, Account Registration \& Login\\[4pt]
+\textcolor{adminaccent}{\faPlusCircle} \, Creating \& Configuring Elections\\[4pt]
+\textcolor{adminaccent}{\faCalendarAlt} \, Scheduling Elections (Phase 3)\\[4pt]
+\textcolor{adminaccent}{\faChartBar} \, Initiating the Tally Process\\[4pt]
+\textcolor{adminaccent}{\faLayerGroup} \, Combining Decryption Shares\\[4pt]
+\textcolor{adminaccent}{\faSearch} \, Monitoring \& Audit Tools
+\end{tcolorbox}
+
+\vfill
+{\small\color{sectiongray} Version 1.0 \quad|\quad \today}
+\end{titlepage}
+\nopagecolor\color{black}
+
+\frontmatter
+\tableofcontents
+\clearpage
+
+\chapter*{Introduction for Administrators}
+\addcontentsline{toc}{chapter}{Introduction}
+
+Welcome to the AmarVote Administrator Guide. As an administrator, you are responsible for the most critical steps of the election lifecycle: creating the election, configuring its parameters, scheduling it after the guardian key ceremony is complete, and initiating the final tally.
+
+\begin{tcolorbox}[notebox]
+\textbf{Your role in the cryptographic chain:} Although you administer the election, you \emph{cannot} decrypt ballots alone. The decryption keys are distributed among Guardians. This design guarantees tamper-proof results even if an administrator account were to be compromised.
+\end{tcolorbox}
+
+\textbf{Prerequisites before you begin:}
+\begin{itemize}
+  \item Your email must be on the \textbf{Authorised User List} with an Admin role (or User role with election-creation permission).
+  \item You must have a registered AmarVote account.
+  \item You must know the email addresses of your intended Guardians and Voters.
+\end{itemize}
+
+\mainmatter
+
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Account Setup: Registration \& Login}
+\label{ch:admin-account}
+
+Every administrator starts as an ordinary user and must register their account. This chapter walks you through that process.
+
+\section{Prerequisite: Getting Authorised}
+
+Before registering, confirm with your platform Owner that your email has been added to the Authorised User List with the \textbf{Admin} role (or that the \emph{Can Create Elections} flag is enabled for your account if you have a User role).
+
+\section{Registering Your Account}
+
+\begin{tcolorbox}[stepbox, title={Step 1: Navigate to Registration}]
+Open your browser and go to the AmarVote URL. On the homepage, click \uibutton{Register} or navigate directly to \texttt{/register}.
+\end{tcolorbox}
+
+\begin{tcolorbox}[stepbox, title={Step 2: Submit Your Email}]
+\begin{enumerate}
+  \item Enter your authorised email address in the \uifield{Email Address} field.
+  \item Click \uibutton{Send Verification Code}.
+  \item Wait for an OTP email to arrive in your inbox (check spam if needed --- arrives within 2 minutes).
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[stepbox, title={Step 3: Verify Your Email}]
+\begin{enumerate}
+  \item Open the OTP email from AmarVote.
+  \item Copy the 6-digit code.
+  \item Enter it in the \uifield{Verification Code} field on the registration page.
+  \item Click \uibutton{Verify Email}.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[stepbox, title={Step 4: Set Your Password}]
+\begin{enumerate}
+  \item Enter a strong password (12+ characters, mixed case, numbers, and symbols).
+  \item Confirm the password in the \uifield{Confirm Password} field.
+  \item Click \uibutton{Create Account}.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[dangerbox]
+Never use a simple or reused password for your admin account. A compromised admin account can alter election configuration before the election starts. Use a password manager.
+\end{tcolorbox}
+
+\section{Enabling Two-Factor Authentication (Strongly Recommended)}
+
+As an administrator, 2FA is strongly recommended to protect your account.
+
+\begin{enumerate}
+  \item After logging in, click your profile avatar and select \uimenu{Profile Settings}.
+  \item Navigate to the \uimenu{Security} section and click \uibutton{Enable 2FA}.
+  \item Scan the displayed QR code with Google Authenticator, Authy, or any TOTP app.
+  \item Enter the first 6-digit code generated by the app in the \uifield{Verification Code} field.
+  \item Click \uibutton{Activate}. 2FA is now live.
+  \item \textbf{Save the recovery codes} displayed on the next screen in a secure location.
+\end{enumerate}
+
+\section{Logging In}
+
+\begin{enumerate}
+  \item Navigate to the AmarVote URL and click \uibutton{Login}.
+  \item Enter your \uifield{Email Address} and \uifield{Password}.
+  \item If 2FA is enabled, enter the current 6-digit code from your authenticator app.
+  \item Click \uibutton{Sign In}.
+\end{enumerate}
+
+Upon login you will land on your \textbf{Dashboard}, which shows all elections you administer or are associated with.
+
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Creating an Election}
+\label{ch:admin-create}
+
+\begin{tcolorbox}[warnbox]
+The \uimenu{Create Election} option only appears in the navigation if your account has election-creation permission. If you do not see it, contact the platform Owner.
+\end{tcolorbox}
+
+\section{Opening the Election Form}
+
+\begin{enumerate}
+  \item Log in and go to your dashboard.
+  \item Click \uimenu{Create Election} in the left sidebar.
+  \item The \textbf{New Election Setup} form opens. It consists of several sections described below.
+\end{enumerate}
+
+\section{Section 1 --- Election Identity}
+
+\begin{center}
+\begin{tabularx}{0.95\textwidth}{>{\bfseries}l X l}
+\toprule
+\rowcolor{adminred}\color{white}Field & \color{white}Description & \color{white}Required \\
+\midrule
+\rowcolor{lightgray}Election Name & Short, descriptive title shown to all users & \textcolor{successborder}{\faCheck} \\
+Description & Longer explanation of election purpose & \textcolor{successborder}{\faCheck} \\
+\rowcolor{lightgray}Visibility & Public (all users see) or Private (invited only) & \textcolor{successborder}{\faCheck} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Public vs. Private Elections}
+
+\begin{itemize}
+  \item \textbf{Public}: The election is listed for all users. Anyone with an account can see its candidates, schedule, and results.
+  \item \textbf{Private}: The election is hidden from the general list. Only voters explicitly invited, assigned guardians, and you (the admin) can access it.
+\end{itemize}
+
+\begin{tcolorbox}[notebox]
+For sensitive elections (internal corporate votes, confidential board elections), always choose \textbf{Private}.
+\end{tcolorbox}
+
+\section{Section 2 --- Voter Configuration}
+
+This section determines who is allowed to vote.
+
+\subsection{Option A: All Registered Users}
+
+\begin{enumerate}
+  \item Select \uimenu{Anyone (All Registered Users)} from the \uifield{Voter Access} dropdown.
+\end{enumerate}
+
+This is appropriate for open community elections where all registered platform members should participate.
+
+\subsection{Option B: Restricted Voter List}
+
+\begin{enumerate}
+  \item Select \uimenu{Upload Voter List (CSV)}.
+  \item Prepare a file named \texttt{voters.csv} with the following format:
+  \begin{center}
+    \texttt{email}\\
+    \texttt{voter1@example.com}\\
+    \texttt{voter2@example.com}\\
+    $\vdots$
+  \end{center}
+  \item Click \uibutton{Upload Voters CSV} and select the file.
+  \item Verify the \textbf{Voter Count} shown after upload matches your expectation.
+\end{enumerate}
+
+\begin{tcolorbox}[tipbox]
+Voters on the restricted list who have not yet registered will still be able to vote after completing their account registration. Notify all voters in advance with the election URL and their expected registration deadline.
+\end{tcolorbox}
+
+\section{Section 3 --- Guardian Configuration}
+
+Guardians are the trusted key-holders for your election. This is the most security-critical configuration step.
+
+\subsection{Uploading the Guardian List}
+
+\begin{enumerate}
+  \item Prepare a file \texttt{guardians.csv} with one email per row:
+  \begin{center}
+    \texttt{email}\\
+    \texttt{guardian1@example.com}\\
+    \texttt{guardian2@example.com}\\
+    $\vdots$
+  \end{center}
+  \item Click \uibutton{Upload Guardians CSV}.
+  \item Verify the guardian count.
+\end{enumerate}
+
+\subsection{Setting the Quorum}
+
+The \textbf{quorum} ($k$) is the minimum number of guardians needed to decrypt the tally. With $n$ total guardians:
+
+\begin{itemize}
+  \item Minimum recommended quorum: $k \geq \lceil n/2 \rceil + 1$
+  \item A quorum of $n$ (all guardians required) provides maximum security but is fragile --- one absent guardian blocks results.
+  \item A quorum of 1 provides maximum resilience but minimum protection --- any single guardian alone can decrypt.
+\end{itemize}
+
+\begin{tcolorbox}[warnbox]
+\textbf{Choosing quorum is irreversible.} Once the key ceremony begins, the quorum cannot be changed. Choose carefully based on your election's security requirements and guardian reliability.
+\end{tcolorbox}
+
+\begin{center}
+\begin{tabularx}{0.9\textwidth}{cccX}
+\toprule
+\rowcolor{adminred}\color{white}Total Guardians ($n$) & \color{white}Quorum ($k$) & \color{white}Guardians Can Miss & \color{white}Notes \\
+\midrule
+\rowcolor{lightgray}3 & 2 & 1 & Balanced: common recommendation \\
+5 & 3 & 2 & Standard for important elections \\
+\rowcolor{lightgray}5 & 4 & 1 & High security, low tolerance for absence \\
+7 & 4 & 3 & Very resilient \\
+\rowcolor{lightgray}7 & 5 & 2 & High security + moderate resilience \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Section 4 --- Ballot \& Candidate Setup}
+
+\subsection{Adding Candidates}
+
+For each candidate you want on the ballot:
+
+\begin{enumerate}
+  \item Click \uibutton{+ Add Candidate}.
+  \item Fill in the following fields:
+  \begin{itemize}
+    \item \uifield{Candidate Full Name} (required)
+    \item \uifield{Party / Affiliation Name} (optional but recommended)
+    \item \uifield{Candidate Photo} --- upload a clear headshot (JPG/PNG, max 2 MB; optional)
+    \item \uifield{Party Logo} --- upload the party's logo image (optional)
+  \end{itemize}
+  \item Click \uibutton{Save Candidate}.
+  \item Repeat for all candidates.
+\end{enumerate}
+
+\begin{tcolorbox}[tipbox]
+You can reorder candidates using drag-and-drop. The order shown in the form is the order voters will see in the voting booth. Randomising candidate order (if your institution requires it) should be done before upload.
+\end{tcolorbox}
+
+\subsection{Setting Maximum Votes Per Voter}
+
+\begin{enumerate}
+  \item Locate the \uifield{Maximum Votes Per Voter} field.
+  \item Enter the number:
+  \begin{itemize}
+    \item \textbf{1} = Standard single-choice election
+    \item \textbf{2 or more} = Voters may select up to that many candidates
+    \item \textbf{Equal to total candidates} = Approval voting (vote for any subset)
+  \end{itemize}
+\end{enumerate}
+
+\begin{tcolorbox}[notebox]
+When Maximum Votes $> 1$, voters can submit fewer than the maximum. For example, if max = 3, a voter can validly submit 1, 2, or 3 choices. The encrypted ballot correctly represents each count.
+\end{tcolorbox}
+
+\section{Finalising Election Creation}
+
+\begin{enumerate}
+  \item Review the complete \textbf{Summary Panel} on the right side of the form.
+  \item Verify: election name, visibility, voter count, guardian count, quorum, candidates.
+  \item Click \uibutton{Create Election}.
+  \item You will be redirected to the \textbf{Election Management Page}.
+  \item The election status now reads \textbf{``Key Ceremony: Phase 1''}.
+\end{enumerate}
+
+\begin{tcolorbox}[warnbox]
+After creation, you cannot change the guardian list, voter list, or quorum. You can edit the election name and description until the election goes live, and you can add/edit candidates until Phase 3 is complete.
+\end{tcolorbox}
+
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Monitoring the Key Ceremony}
+\label{ch:admin-ceremony}
+
+After election creation, the guardian key ceremony begins. As the admin, your role during Phases 1 and 2 is primarily to \textbf{monitor progress} and \textbf{follow up} with guardians who have not completed their steps.
+
+\section{Tracking Phase 1 Progress}
+
+\begin{enumerate}
+  \item Navigate to the Election Management Page for your election.
+  \item Open the \uimenu{Guardian Status} section (or the \uimenu{Key Ceremony} tab).
+  \item A table will display each guardian's name/email and their Phase 1 completion status.
+  \item Guardians who have not yet submitted their public key will show as \textbf{Pending}.
+\end{enumerate}
+
+\begin{tcolorbox}[tipbox]
+Send a reminder to guardians who have been Pending for more than 24 hours. The election cannot proceed until all guardians complete Phase 1.
+\end{tcolorbox}
+
+\section{Tracking Phase 2 Progress}
+
+Once all guardians complete Phase 1, Phase 2 begins automatically. Monitor Phase 2 progress in the same \uimenu{Guardian Status} panel. All guardians must complete Phase 2 before Phase 3 (scheduling) becomes available to you.
+
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Scheduling the Election (Phase 3)}
+\label{ch:admin-schedule}
+
+Phase 3 is your final pre-election administrative step. It becomes available only after all guardians complete Phase 2.
+
+\begin{tcolorbox}[phasebox, title={Phase 3: Election Scheduling}]
+\textbf{Trigger:} All guardians successfully submit backup shares (Phase 2 complete).\\
+\textbf{Actor:} Admin\\
+\textbf{Action:} Set start/end dates and publish the election.
+\end{tcolorbox}
+
+\section{Steps to Schedule and Publish}
+
+\begin{enumerate}
+  \item Navigate to the Election Management Page.
+  \item You will see the \textbf{Phase 3: Schedule Election} panel is now active and unlocked.
+  \item Click the \uifield{Start Date \& Time} picker and select when the election opens.
+  \item Click the \uifield{End Date \& Time} picker and select when the election closes.
+  \item Double-check the times. Ensure you account for timezone.
+  \item Click \uibutton{Publish Election}.
+  \item The election status changes to \textbf{Scheduled}.
+\end{enumerate}
+
+\begin{tcolorbox}[tipbox]
+Best practice: set the election to start at least 24 hours from now, giving you time to notify voters. For large elections, 48--72 hours advance notice is recommended.
+\end{tcolorbox}
+
+\begin{tcolorbox}[warnbox]
+Once published, voters can immediately see the election is scheduled. The voting booth opens automatically at the exact start time --- no further admin action is required to open voting.
+\end{tcolorbox}
+
+\section{Post-Publishing Checklist}
+
+After publishing the election, complete the following:
+
+\begin{center}
+\begin{tabularx}{0.9\textwidth}{lX}
+\toprule
+\rowcolor{adminred}\color{white} & \color{white}Action \\
+\midrule
+\rowcolor{lightgray}$\square$ & Notify all voters of the election dates and the direct link \\
+$\square$ & Confirm with guardians that they have securely stored their key files and passwords \\
+\rowcolor{lightgray}$\square$ & Inform guardians of the expected decryption date (after election closes) \\
+$\square$ & Verify the election page displays correctly (candidates, descriptions, dates) \\
+\rowcolor{lightgray}$\square$ & Test access with a sample voter account if available \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{During the Election}
+\label{ch:admin-during}
+
+While the election is live, your responsibilities are minimal. The system handles ballot encryption, submission, and receipt emails automatically.
+
+\section{What You Can Monitor}
+
+Navigate to the Election Management Page at any time to see:
+
+\begin{itemize}
+  \item \textbf{Ballot Count}: Number of encrypted ballots submitted so far.
+  \item \textbf{Voter Turnout}: Percentage of the voter list that has voted.
+  \item \textbf{Election Status}: Confirms the election is currently open.
+\end{itemize}
+
+\section{What You Cannot Do}
+
+\begin{itemize}
+  \item You cannot see individual votes (all ballots are encrypted).
+  \item You cannot extend or shorten the election time after publishing (contact the platform Owner if an emergency extension is required).
+  \item You cannot remove cast ballots.
+\end{itemize}
+
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Tallying the Election}
+\label{ch:admin-tally}
+
+After the election closes, you must initiate the tally process. This can also be started by a guardian, but is typically the admin's responsibility.
+
+\section{Initiating the Tally}
+
+\begin{enumerate}
+  \item Navigate to the Election Management Page.
+  \item The election status should show \textbf{``Closed''} or \textbf{``Tally Ready''}.
+  \item Click the \uimenu{Tally} tab.
+  \item Click \uibutton{Initiate Tally}.
+\end{enumerate}
+
+\subsection{What Happens During Tallying}
+
+The backend processing pipeline:
+
+\begin{enumerate}
+  \item Retrieves all cast encrypted ballots from the database.
+  \item Divides ballots into chunks of approximately \textbf{200 ballots per chunk}.
+  \item For each chunk, uses \textbf{homomorphic encryption} to compute an encrypted partial tally --- the individual ballots are added together without decrypting any individual vote.
+  \item Combines all chunk tallies into a single \textbf{encrypted aggregate tally}.
+  \item Stores all tally artefacts in the database.
+\end{enumerate}
+
+\begin{tcolorbox}[notebox]
+Homomorphic encryption allows the system to sum encrypted votes without ever seeing the individual vote contents. The final encrypted tally represents the total vote counts, but only the guardian key ceremony can decrypt it to reveal the actual numbers.
+\end{tcolorbox}
+
+\section{Monitoring Tally Progress}
+
+\begin{enumerate}
+  \item The \uimenu{Tally} tab will display a progress bar showing chunks processed vs. total.
+  \item For large elections, processing may take several minutes. The page updates automatically.
+  \item When all chunks are processed, you will see \textbf{``Tally Complete''} and a summary of the encrypted artefacts.
+\end{enumerate}
+
+\section{Notifying Guardians for Decryption}
+
+After the tally is complete:
+
+\begin{enumerate}
+  \item Notify all guardians that partial decryption can now begin.
+  \item Instruct them to navigate to the election's Guardian tab.
+  \item Direct them to the Guardian Guide for step-by-step decryption instructions.
+\end{enumerate}
+
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Combining Decryption Shares \& Publishing Results}
+\label{ch:admin-combine}
+
+After a sufficient number of guardians (at least the quorum) have submitted their partial decryptions, the final step is to combine all shares to produce the plaintext results.
+
+\section{Checking Guardian Decryption Status}
+
+\begin{enumerate}
+  \item Navigate to the \uimenu{Guardian Status} section of the Tally tab.
+  \item Check how many guardians have completed their partial decryption. You need at least \textbf{quorum} guardians to have completed this step.
+  \item The status panel shows each guardian's decryption status.
+\end{enumerate}
+
+\section{Combining the Shares}
+
+\begin{enumerate}
+  \item Once the quorum threshold is met, the \uibutton{Combine Decryption Shares} button becomes active.
+  \item Click \uibutton{Combine Decryption Shares}.
+  \item The system mathematically combines all partial decryptions (and compensated decryptions for absent guardians).
+  \item The plaintext vote totals are computed.
+  \item Results are published and become visible on the election's public results page.
+\end{enumerate}
+
+\begin{tcolorbox}[warnbox]
+\textbf{This action is irreversible.} Once decryption shares are combined and results are published, they cannot be revoked or re-computed. Ensure you have the correct number of guardian submissions before clicking this button.
+\end{tcolorbox}
+
+\section{The Published Results Page}
+
+After combination, the election results page will display:
+
+\begin{itemize}
+  \item Vote totals per candidate (bar chart and table)
+  \item Percentage breakdown
+  \item Total ballots cast vs. total eligible voters
+  \item Challenged ballots count (Benaloh Challenge audit trail)
+  \item Links to download the full cryptographic audit data
+\end{itemize}
+
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Audit \& Verification Tools for Admins}
+\label{ch:admin-audit}
+
+\section{Election Data Export}
+
+\begin{enumerate}
+  \item Navigate to the \uimenu{Verification} tab of the election.
+  \item Click \uibutton{Download Election Data}.
+  \item The ZIP archive contains:
+  \begin{itemize}
+    \item All encrypted ballots (as JSON objects)
+    \item Guardian public keys
+    \item Encrypted tally data
+    \item All partial and compensated decryption artefacts
+    \item Final results with cryptographic proofs
+  \end{itemize}
+\end{enumerate}
+
+\begin{tcolorbox}[notebox]
+This data package is suitable for sharing with independent auditors. It contains all the information needed to re-verify the election from scratch using the open-source ElectionGuard specification, but contains no private keys or voter identities.
+\end{tcolorbox}
+
+\section{Worker Logs}
+
+For technical troubleshooting, navigate to \uimenu{API Logs} in the sidebar to see detailed logs of all background operations: tally creation, partial decryption, compensated decryption, and combination.
+
+\section{Ballot Audit Trail}
+
+In the \uimenu{Ballots in Tally} tab, you can view:
+\begin{itemize}
+  \item All cast ballot tracking codes (anonymised)
+  \item Challenged ballot codes (marked as ``Spoiled'')
+  \item Ballot timestamps
+\end{itemize}
+
+% ════════════════════════════════════════════════════════════════════════════
+\appendix
+
+\chapter{Administrator Quick Reference}
+
+\begin{longtable}{>{\bfseries}p{4cm} p{6cm} p{3cm}}
+\toprule
+\rowcolor{adminred}\color{white}Task & \color{white}Where to Find It & \color{white}When \\
+\midrule\endhead
+Register account & \texttt{/register} & One-time \\
+\rowcolor{lightgray}Log in & \texttt{/login} & Each session \\
+Create election & Sidebar $\to$ Create Election & Before ceremony \\
+\rowcolor{lightgray}Monitor key ceremony & Election Page $\to$ Guardian Status & During ceremony \\
+Schedule election & Election Page $\to$ Phase 3 panel & After Phase 2 complete \\
+\rowcolor{lightgray}Monitor live election & Election Page $\to$ Dashboard & During voting \\
+Initiate tally & Election Page $\to$ Tally tab & After election closes \\
+\rowcolor{lightgray}Combine shares & Election Page $\to$ Tally tab & After quorum decrypts \\
+Export audit data & Election Page $\to$ Verification tab & Anytime after results \\
+\rowcolor{lightgray}View worker logs & Sidebar $\to$ API Logs & For troubleshooting \\
+\bottomrule
+\end{longtable}
+
+\chapter{Common Errors and Resolutions}
+
+\begin{longtable}{>{\bfseries}p{4.5cm} p{8cm}}
+\toprule
+\rowcolor{adminred}\color{white}Error / Issue & \color{white}Resolution \\
+\midrule\endhead
+``Create Election'' not visible & Contact Owner: your account may lack election-creation permission. \\
+\rowcolor{lightgray}Guardian stuck in Phase 1 & Remind guardian to check their registered email and complete key generation. \\
+Tally stalls in progress & Check API Logs for processing errors. Contact the platform administrator. \\
+\rowcolor{lightgray}Combine button stays greyed out & Check that quorum-many guardians have completed partial decryption. \\
+Voter cannot access voting booth & Verify voter's email is in the voter CSV, or that the election is set to ``All Users''. \\
+\rowcolor{lightgray}Voter did not receive receipt & Check the election's email configuration. Voter may need to check spam. \\
+\bottomrule
+\end{longtable}
+
+\end{document}
