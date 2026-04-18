@@ -144,6 +144,26 @@
 \newcommand{\placeholder}[1]{\textit{\color{sectiongray}[#1]}}
 \newcommand{\role}[1]{\textbf{\textsc{#1}}}
 
+% ─── Figure Helper ───────────────────────────────────────────────────────────
+% Usage: \screenfig[width fraction]{filename}{caption}
+\newcommand{\screenfig}[3][0.92]{%
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=#1\linewidth]{figures/#2}
+    \caption{#3}
+    \label{fig:#2}
+  \end{figure}%
+}
+% Narrow figure helper (0.60 width) for CSV/file format screenshots
+\newcommand{\screenfignarrow}[2]{%
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.60\linewidth]{figures/#1}
+    \caption{#2}
+    \label{fig:narrow-#1}
+  \end{figure}%
+}
+
 % ─── List Styling ────────────────────────────────────────────────────────────
 \setlist[itemize,1]{label=\textcolor{accentteal}{\faChevronRight}, leftmargin=1.5em}
 \setlist[itemize,2]{label=\textcolor{sectiongray}{\faCircle[regular]}, leftmargin=2em}
@@ -267,12 +287,21 @@ The Owner maintains a registry of permitted email addresses. Each entry in the l
 
 \begin{enumerate}
 	\item Log in to AmarVote with an Owner account.
+	\item Open the navigation menu by clicking the menu icon at the top of the sidebar.
+
+	      \screenfig{openMenu.png}{Opening the navigation menu}
+
 	\item Navigate to \uimenu{Authenticated Users} in the sidebar.
+
+	      \screenfig{menuSelectAuthenticatedUsers.png}{Selecting \textit{Authenticated Users} from the navigation menu}
+
 	\item Click \uibutton{Add User}.
 	\item Enter the email address in the \uifield{Email} field.
 	\item Select the appropriate role from the \uifield{Role} dropdown.
 	\item Click \uibutton{Save}.
 \end{enumerate}
+
+\screenfig{authenticateOneUser.png}{Adding an individual user to the Authorised User List}
 
 \begin{tcolorbox}[tipbox]
 	If you are adding a small number of users (fewer than 10), the individual entry method is faster. For larger groups, use CSV bulk upload.
@@ -283,14 +312,15 @@ The Owner maintains a registry of permitted email addresses. Each entry in the l
 For adding many users at once:
 
 \begin{enumerate}
-	\item Prepare a \texttt{.csv} file with the following columns:\\
-	      \texttt{email, role, can\_create\_elections}\\
-	      Example row: \texttt{alice@example.com, admin, true}
+	\item Prepare a \texttt{.csv} file with one column, emails\\
+
+	      \screenfignarrow{guardiansCSVFile.png}{Example CSV format for bulk user upload}
+
 	\item Navigate to \uimenu{Authenticated Users} $\to$ \uibutton{Import CSV}.
 	\item Click \uibutton{Choose File} and select your prepared CSV.
-	\item Review the preview table that appears --- verify counts and roles.
-	\item Click \uibutton{Confirm Import}.
 \end{enumerate}
+
+\screenfig{authenticateUsersWithCSVFileUpload.png}{Bulk importing users via CSV upload}
 
 \begin{tcolorbox}[warnbox]
 	Duplicate email entries in the CSV will be ignored. If an email already exists in the system, it will be ignored, not duplicated.
@@ -382,6 +412,9 @@ After your account is created, you can enable Two-Factor Authentication using \t
 \begin{enumerate}
 	\item Log in to your new account.
 	\item Click your profile avatar in the top-right corner.
+
+	      \screenfig{goToProfileMenu.png}{Accessing the profile menu from the top-right corner}
+
 	\item Click \uibutton{Enable Two-Factor Authentication}.
 	\item A QR code will be displayed on screen.
 	\item Open the Google/Microsoft Authenticator app on your smartphone.
@@ -429,8 +462,8 @@ If you have 2FA enabled:
 \begin{enumerate}
 	\item On the login page, click \uimenu{Forgot Password?}.
 	\item Enter your registered email address and click \uibutton{Send Reset Link}.
-	\item Check your email for a password reset link (valid for some minutes).
-	\item Click the link and set a new password.
+	\item Check your email for a password reset verification code (valid for some minutes).
+	\item Verify the code and set a new password.
 \end{enumerate}
 
 % ════════════════════════════════════════════════════════════════════════════
@@ -450,7 +483,14 @@ This chapter is intended for Admins (and Users with election-creation permission
 
 \begin{enumerate}
 	\item Log in to AmarVote.
+	\item Open the navigation menu by clicking the menu icon at the top of the sidebar.
+
+	      \screenfig{openMenu.png}{Opening the navigation menu to access election management options}
+
 	\item In the left navigation sidebar, click \uimenu{Create Election}.
+
+	      \screenfig{menuSelectCreateElection.png}{Selecting \textit{Create Election} from the navigation menu}
+
 	\item The \textbf{New Election} form will open.
 \end{enumerate}
 
@@ -463,7 +503,7 @@ This chapter is intended for Admins (and Users with election-creation permission
 	\item \uifield{Description}: A longer explanation of the election's purpose, visible to voters.
 \end{itemize}
 
-\subsection{Visibility: Public vs. Private}
+\subsection{Visibility: Public vs.\ Private}
 
 \begin{center}
 	\begin{tabularx}{0.9\textwidth}{>{\bfseries}l X}
@@ -475,6 +515,8 @@ This chapter is intended for Admins (and Users with election-creation permission
 		\bottomrule
 	\end{tabularx}
 \end{center}
+
+\screenfig{createElectionTitleDescriptionMaxChoice.png}{Election creation form --- title, description, and maximum choice configuration}
 
 \section{Voter Configuration}
 
@@ -494,9 +536,14 @@ To limit voting to specific individuals:
 	\item Select \uimenu{Upload Voter List} from the \uifield{Voter List} dropdown.
 	\item Prepare a CSV file with one column: \texttt{email}.\\
 	      Example: \texttt{voter1@example.com}, one per row.
+
+	      \screenfignarrow{votersCSVFile.png}{Example voter CSV file format --- one email address per row}
+
 	\item Click \uibutton{Upload Voters CSV} and select your file.
 	\item Review the voter count displayed after upload.
 \end{enumerate}
+
+\screenfig{createElectionAddVoters.png}{Uploading the restricted voter list during election creation}
 
 \begin{tcolorbox}[notebox]
 	Voters on the list who do not yet have an AmarVote account will need to register before they can vote. It is recommended to notify voters in advance.
@@ -510,9 +557,14 @@ Guardians are trusted individuals who each hold a share of the cryptographic key
 
 \begin{enumerate}
 	\item Prepare a CSV file with one column: \texttt{email} (one guardian email per row).
+
+	      \screenfignarrow{guardiansCSVFile.png}{Example guardians CSV file format --- one guardian email per row}
+
 	\item Click \uibutton{Upload Guardians CSV} and select your file.
 	\item The system will display the total number of guardians detected.
 \end{enumerate}
+
+\screenfig{createElectionAddGuardians.png}{Adding guardians during election creation}
 
 \subsection{Setting the Quorum}
 
@@ -541,6 +593,8 @@ For each candidate:
 	\item Upload a \uifield{Party Logo} (optional).
 	\item Repeat for each candidate.
 \end{enumerate}
+
+\screenfig{createElectionAddCandidates.png}{Adding candidates to the election ballot}
 
 \begin{tcolorbox}[tipbox]
 	Candidate photos and party logos significantly improve the voter experience, especially in large elections with many candidates. Providing them is strongly recommended.
@@ -589,15 +643,24 @@ Each guardian must complete Phase 1 independently:
 
 \begin{enumerate}
 	\item Log in to AmarVote.
-	\item You will see a notification indicating you have been assigned as a guardian. Navigate to \uimenu{All Elections} and find the election.
-	\item Open the election page and click the \uimenu{Guardian} tab.
+	\item You will see a notification indicating you have been assigned as a guardian.
+
+	      \screenfig{keyCeremonyGuardianNotification.png}{Guardian notification upon being assigned to an election}
+
+	\item Navigate to \uimenu{All Elections} and find the election. Open the election page and click the \uimenu{Guardian} tab.
 	\item You will see that \textbf{Phase 1: Key Pair Generation} is active.
 	\item Click \uibutton{Generate Key Pair}.
 	\item The system will cryptographically generate an \textbf{asymmetric key pair} (a public key and a private key) specifically for this election.
+
+	      \screenfig{keyCeremonyKeypairGeneration.png}{Phase 1 key pair generation interface}
+
 	\item You will be prompted to create a \textbf{Guardian Password}. This password is used to encrypt your private key using AES-256 (a military-grade symmetric encryption standard).
 	\item \textbf{Important:} Click \uibutton{Generate Secure Password} to let the system generate a random, strong password for you, \emph{or} enter your own password in the field.
 	\item Click \uibutton{Submit Key Pair}.
 	\item Your browser will automatically \textbf{download an encrypted private key file} (\texttt{.txt}) to your computer.
+
+	      \screenfig{keyCeremonyPrivateKeyDownload.png}{Downloading the encrypted private key file after key pair generation}
+
 	\item Your \textbf{public key} is stored in the AmarVote database. Your \textbf{private key} is stored \emph{only} on your device, encrypted with your guardian password.
 \end{enumerate}
 
@@ -607,7 +670,7 @@ Each guardian must complete Phase 1 independently:
 \end{tcolorbox}
 
 \begin{tcolorbox}[tipbox]
-	Store the private key file in a secure location --- an encrypted USB drive, a secure cloud vault, or your system's encrypted home directory. You dont need to store the guardian password, as it is stored in database using ML KEM 1024 post quantum encryption. 
+	Store the private key file in a secure location --- an encrypted USB drive, a secure cloud vault, or your system's encrypted home directory. You dont need to store the guardian password, as it is stored in database using ML KEM 1024 post quantum encryption.
 \end{tcolorbox}
 
 \subsection{Phase Transition Condition}
@@ -638,7 +701,6 @@ If G1 later loses their private key, any \emph{quorum} number of other guardians
 	\item Navigate to the election's \uimenu{Guardian} tab.
 	\item You will see that \textbf{Phase 2: Backup Share Generation} is now active.
 	\item Click \uibutton{Upload Encrypted Key File} and select the \texttt{.txt} file you downloaded in Phase 1.
-	\item Enter your \uifield{Guardian Password} in the provided field. The system will temporarily decrypt your private key in memory to generate the shares.
 	\item Click \uibutton{Generate Backup Shares}.
 	\item The system will:
 	      \begin{enumerate}
@@ -649,6 +711,8 @@ If G1 later loses their private key, any \emph{quorum} number of other guardians
 	      \end{enumerate}
 	\item A confirmation message will appear when Phase 2 is complete for you.
 \end{enumerate}
+
+\screenfig{keyCeremonyBackupKeySharing.png}{Phase 2 backup key share generation and submission}
 
 \begin{tcolorbox}[warnbox]
 	Your password and decrypted private key are used only in-memory during this step. They are \textbf{never stored} in the database. The database only stores the encrypted backup shares.
@@ -672,8 +736,13 @@ When all guardians have completed Phase 2, the admin is notified and Phase 3 bec
 	\item Select the \uifield{Election Start Date and Time}.
 	\item Select the \uifield{Election End Date and Time}.
 	\item Click \uibutton{Activate Election}.
+
+	      \screenfig{createElectionSetTimeAndActivateElection.png}{Setting the election schedule and activating the election in Phase 3}
+
 	\item The election status changes to \textbf{Scheduled}. Voters will be able to vote starting from the specified start time.
 \end{enumerate}
+
+\screenfig{electionPageWithStartandFinishingTime.png}{Election page showing the confirmed start and finish times after activation}
 
 \begin{tcolorbox}[tipbox]
 	Notify voters in advance of the election dates. If you uploaded a voter CSV, consider sending a separate reminder email to all voters with the election start time and access link.
@@ -692,10 +761,25 @@ AmarVote uses an \textbf{end-to-end verifiable} voting protocol. Your ballot is 
 
 \begin{enumerate}
 	\item Log in to AmarVote during the election period.
-	\item Navigate to \uimenu{All Elections} and find the election you wish to vote in.
+	\item Open the navigation menu and navigate to \uimenu{All Elections}.
+
+	      \screenfig{openMenu.png}{Opening the navigation menu to navigate to elections}
+
+	      \screenfig{menuSelectAllElections.png}{Selecting \textit{All Elections} from the navigation menu}
+
+	\item Find the election you wish to vote in. You can use the \uimenu{Ongoing} filter to quickly locate active elections.
+
+	      \screenfig{findCurrentElectionsInAllElectionsSelectingOngoingOption.png}{Filtering elections by \textit{Ongoing} status to find a current election}
+
+	      Alternatively, active elections may also appear in your \uimenu{Dashboard}.
+
+	      \screenfig{findCurrentElectionsInDashboard.png}{Finding current elections directly from the Dashboard}
+
 	\item Open the election page.
 	\item Click the \uimenu{Voting Booth} tab.
 \end{enumerate}
+
+\screenfig{votingBoothShowingEligibility.png}{The Voting Booth tab, confirming voter eligibility before ballot creation}
 
 \begin{tcolorbox}[warnbox]
 	The \uimenu{Voting Booth} tab will only appear if:
@@ -715,9 +799,13 @@ AmarVote uses an \textbf{end-to-end verifiable} voting protocol. Your ballot is 
 	\item Once you have made your selection(s), click \uibutton{Create Encrypted Ballot}.
 \end{enumerate}
 
+\screenfig{createEncryptedBallot.png}{Selecting candidates and creating an encrypted ballot in the Voting Booth}
+
 \begin{tcolorbox}[notebox]
 	\textbf{Important distinction:} Creating an encrypted ballot is \emph{not} the same as casting your vote. This step only creates a cryptographic envelope for your choice. You have two options from here: \textbf{cast} the ballot or \textbf{challenge} it (Benaloh Challenge).
 \end{tcolorbox}
+
+\screenfig{encryptedBallotCreatedSuccessfully.png}{Confirmation that the encrypted ballot has been successfully created}
 
 \section{The Benaloh Challenge}
 \label{sec:benaloh}
@@ -745,9 +833,33 @@ When you create an encrypted ballot for candidates A and B:
 \begin{enumerate}
 	\item After creating an encrypted ballot, click \uibutton{Challenge Ballot (Benaloh Challenge)}.
 	\item A selection interface will appear. Select what you believe you voted for.
+
+	      \screenfig{benalohChallengeCorrectSelection.png}{Benaloh Challenge --- entering the correct candidate selection to verify the encryption}
+
 	\item Click \uibutton{Submit Challenge}.
 	\item The system will report whether the challenge passed or failed.
 \end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/benalohChallengePassed.png}
+		\caption{Challenge passed --- encryption verified successfully}
+		\label{fig:benaloh-passed}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/benalohChallengeFailed.png}
+		\caption{Challenge failed --- encryption mismatch detected}
+		\label{fig:benaloh-failed}
+	\end{subfigure}
+	\caption{Benaloh Challenge outcomes: passed (left) and failed (right)}
+	\label{fig:benaloh-outcomes}
+\end{figure}
+
+\screenfig{benalohChallengeIncorrectSelection.png}{Benaloh Challenge --- example of an incorrect candidate selection that causes the challenge to fail}
 
 \begin{tcolorbox}[dangerbox]
 	\textbf{Critical Rule:} You may only perform the Benaloh Challenge \textbf{once} per encrypted ballot. Regardless of whether the challenge passes or fails, the challenged encrypted ballot is \textbf{permanently discarded}. You must then:
@@ -770,12 +882,15 @@ When you are satisfied that the system is working correctly and ready to cast yo
 	\item Re-select your candidate(s) in the voting booth.
 	\item Click \uibutton{Create Encrypted Ballot}.
 	\item Click \uibutton{Cast Ballot} (do \emph{not} click Challenge this time).
-	
 \end{enumerate}
+
+\screenfig{castEncryptedBallot.png}{Casting the final encrypted ballot --- the irreversible submission step}
 
 \begin{tcolorbox}[dangerbox]
 	\textbf{This action is irreversible.} Once you cast your ballot, it cannot be changed, recalled, or re-cast. Your vote is final.
 \end{tcolorbox}
+
+\screenfig{cantVoteMultipleTimes.png}{System confirmation that a voter cannot cast more than one final ballot}
 
 \section{Your Voter Receipt}
 
@@ -785,6 +900,8 @@ After successfully casting your ballot, AmarVote will send you an email containi
 	\item \textbf{Ballot Tracking Code}: A unique identifier for your ballot in the tally system.
 	\item \textbf{Ballot Hash}: A cryptographic fingerprint of your encrypted ballot.
 \end{itemize}
+
+\screenfig{ballotReceiptReceivedByEmailAfterCastingVote.png}{Voter receipt email received after successfully casting an encrypted ballot}
 
 \begin{tcolorbox}[tipbox]
 	\textbf{Save your receipt!} You will need both the tracking code and the hash to verify your vote after the tally is complete. Save the email or note these values in a secure place.
@@ -823,6 +940,9 @@ Either the election admin or any guardian may start the tally process.
 
 \begin{enumerate}
 	\item Navigate to the election page after the election has closed.
+
+	      \screenfig{seeElectionTimeline.png}{Viewing the election timeline to confirm the election has closed before initiating the tally}
+
 	\item In the \uimenu{Tally} or \uimenu{Results} tab, click \uibutton{Create/Check Tally}.
 	\item The system will begin processing. This involves:
 	      \begin{itemize}
@@ -831,9 +951,30 @@ Either the election admin or any guardian may start the tally process.
 		      \item Computing an encrypted tally for each chunk using homomorphic addition.
 		      \item Combining all chunk tallies into a single encrypted aggregate tally.
 	      \end{itemize}
-	\item A progress indicator will display the number of chunks processed vs. total.
+	\item A progress indicator will display the number of chunks processed vs.\ total.
 	\item When complete, a \textbf{``Tally Complete''} confirmation message is displayed.
 \end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/afterElectionTallyCreation1.png}
+		\caption{Tally creation in progress --- first stage}
+		\label{fig:tally-creation-1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/afterElectionTallyCreation2.png}
+		\caption{Tally creation in progress --- second stage}
+		\label{fig:tally-creation-2}
+	\end{subfigure}
+	\caption{Tally creation progress stages}
+	\label{fig:tally-creation-progress}
+\end{figure}
+
+\screenfig{afterElectionTallyCreatedSuccessfully.png}{Confirmation that the encrypted tally has been created successfully}
 
 \begin{tcolorbox}[notebox]
 	The tally computation is performed asynchronously in the background. For large elections (thousands of votes), this may take several minutes. You do not need to remain on the page --- progress is saved and you can return to check.
@@ -851,8 +992,13 @@ This is the final cryptographic phase. The encrypted tally can only be decrypted
 	\item Guardians are notified that the tally phase is complete and partial decryption can begin.
 	\item Each guardian navigates to the election page and opens the \uimenu{Guardian} tab.
 	\item Click \uibutton{Upload Encrypted Key File} and select your private key file from Phase 1.
-	\item Enter your \uifield{Guardian Password}.
+
+	      \screenfig{uploadCredentialFileForGuardianDecryption.png}{Uploading the encrypted private key file to begin partial decryption}
+
 	\item Click \uibutton{Submit Credentials \& Decrypt}.
+
+	      \screenfig{submitGuardianCredentialsToDecrypt.png}{Submitting guardian credentials to initiate partial decryption}
+
 	\item The system will:
 	      \begin{enumerate}
 		      \item Decrypt your private key using your password (stored in database encrypted by ML KEM 1024).
@@ -862,6 +1008,27 @@ This is the final cryptographic phase. The encrypted tally can only be decrypted
 	      \end{enumerate}
 	\item A confirmation message is displayed when your decryption contribution is submitted.
 \end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/successfulGuardianDecryption.png}
+		\caption{Successful partial decryption submission}
+		\label{fig:guardian-decrypt-success}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/wrongGuardianCredentialFile.png}
+		\caption{Error: incorrect or mismatched credential file}
+		\label{fig:guardian-decrypt-error}
+	\end{subfigure}
+	\caption{Guardian decryption outcomes: success (left) and credential error (right)}
+	\label{fig:guardian-decrypt-outcomes}
+\end{figure}
+
+\screenfig{quorumNumberGuardiansDecrypted.png}{Dashboard showing quorum progress --- number of guardians who have submitted partial decryptions}
 
 \begin{tcolorbox}[warnbox]
 	The partial decryption process may take several minutes depending on the number of tally chunks. You can close the browser tab while decryption is running.
@@ -875,6 +1042,9 @@ Once at least \emph{quorum} guardians have submitted their partial decryptions:
 	\item Navigate to the election's \uimenu{Results} tab.
 	\item The \uibutton{Combine Decryption Shares} button will become active.
 	\item Click \uibutton{Combine Decryption Shares}.
+
+	      \screenfig{combineDecryptionShares.png}{Combining decryption shares to produce the final plaintext tally}
+
 	\item The system mathematically combines all submitted partial and compensated decryption shares to produce the \textbf{final plaintext tally}.
 	\item The election results are now computed and published.
 \end{enumerate}
@@ -882,6 +1052,27 @@ Once at least \emph{quorum} guardians have submitted their partial decryptions:
 \begin{tcolorbox}[tipbox]
 	Results are displayed as a bar chart with vote counts per candidate, alongside percentage breakdowns and total ballot counts. All cryptographic proofs are also made available for public audit.
 \end{tcolorbox}
+
+\screenfig{electionResults.png}{Final election results page showing vote counts and candidate standings}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/electionResultsGraphsAndCharts.png}
+		\caption{Election results displayed as graphs and charts}
+		\label{fig:results-charts}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/electionResultsChunkBreakdown.png}
+		\caption{Detailed chunk-level tally breakdown}
+		\label{fig:results-chunks}
+	\end{subfigure}
+	\caption{Election results analytics: visual charts (left) and chunk tally breakdown (right)}
+	\label{fig:results-analytics}
+\end{figure}
 
 % ════════════════════════════════════════════════════════════════════════════
 \part{Verification \& Audit}
@@ -898,8 +1089,13 @@ After the results are published:
 
 \begin{enumerate}
 	\item Navigate to the election page and open the \uimenu{Verify your vote} tab.
+
+
+
 	\item Click \uimenu{Upload} and upload your ballot receipt you received in the email after your encrypted ballot was cast.
-	\item Click \uibutton{Verify}.
+
+	      \screenfig{uploadYouBallotReceiptToVerify.png}{Uploading the ballot receipt file to initiate vote verification}
+
 \end{enumerate}
 
 The system will confirm:
@@ -908,6 +1104,8 @@ The system will confirm:
 	\item \textbf{Ballot Found}: Your tracking code exists in the tally, confirming your ballot was \emph{recorded}.
 	\item \textbf{Hash Match}: The ballot hash in the tally matches your receipt, confirming your ballot was \emph{not modified} after submission.
 \end{itemize}
+
+\screenfig{ballotVerifiedSuccessfully.png}{Successful ballot verification --- the system confirms the ballot was recorded and unmodified}
 
 \begin{tcolorbox}[tipbox]
 	If the ballot hash does not match, this indicates potential tampering. Report this immediately to the election administrator and your national or institutional election authority.
@@ -920,9 +1118,14 @@ If you prefer to verify without relying on the automated tool:
 \begin{enumerate}
 	\item Navigate to the election's \uimenu{Ballots in Tally} tab.
 	\item This displays the complete list of all encrypted ballots included in the tally.
+
+	      \screenfig{electionResultsballotsInTally.png}{The Ballots in Tally tab, listing all encrypted ballots included in the final tally}
+
 	\item Manually search through the list for your Ballot Tracking Code.
 	\item Compare the displayed ballot hash with the hash in your receipt email.
 \end{enumerate}
+
+\screenfig{seeIndividualEncryptedBallotContent.png}{Viewing the detailed content of an individual encrypted ballot in the tally}
 
 \begin{tcolorbox}[notebox]
 	This manual approach is deliberately available for maximum transparency. Ballot tracking codes are anonymised --- they identify the ballot but not the voter --- so this list is safe to make public.
@@ -944,6 +1147,9 @@ All election data (except private keys) is publicly available for independent au
 		      \item The final plaintext results
 	      \end{itemize}
 \end{enumerate}
+\screenfig{afterElectionVerificationTab.png}{The Verification tab on the election page, available after results are published}
+
+\screenfig{downloadIndividualEncryptedBallots.png}{Downloading individual encrypted ballots for independent audit verification}
 
 \begin{tcolorbox}[notebox]
 	Any technically capable third party can use this downloaded data to re-verify the entire election independently using the ElectionGuard specification.
@@ -978,17 +1184,17 @@ Immediately notify the election administrator. If the remaining guardians still 
 \begin{center}
 	\begin{tabularx}{0.95\textwidth}{>{\bfseries}l X}
 		\toprule
-		\rowcolor{primaryblue}\color{white}Component & \color{white}Security Property                        \\
+		\rowcolor{primaryblue}\color{white}Component & \color{white}Security Property                                              \\
 		\midrule
-		\rowcolor{lightgray}Ballot encryption        & ElectionGuard homomorphic encryption (El Gamal based) \\
-		Private key storage                          & AES-256 encryption with guardian-chosen password      \\
-		\rowcolor{lightgray}Key distribution         & Shamir's Secret Sharing (threshold scheme)            \\
-		Ballot verification                          & Zero-knowledge proofs included with each ballot       \\
-		\rowcolor{lightgray}Guardian backup          & Encrypted with each guardian's public key             \\
-		Transit security                             & HTTPS/TLS (Nginx production configuration + Cloudflare Proxy Configuration)            \\
-		\rowcolor{lightgray}Authentication           & JWT tokens + optional TOTP 2FA                        \\
-		Password hashing                             & bcrypt (Spring Security default)                      \\
-		\rowcolor{lightgray}Infrastructure           & Docker containers, PostgreSQL, Redis, RabbitMQ        \\
+		\rowcolor{lightgray}Ballot encryption        & ElectionGuard homomorphic encryption (El Gamal based)                       \\
+		Private key storage                          & AES-256 encryption with guardian-chosen password                            \\
+		\rowcolor{lightgray}Key distribution         & Shamir's Secret Sharing (threshold scheme)                                  \\
+		Ballot verification                          & Zero-knowledge proofs included with each ballot                             \\
+		\rowcolor{lightgray}Guardian backup          & Encrypted with each guardian's public key                                   \\
+		Transit security                             & HTTPS/TLS (Nginx production configuration + Cloudflare Proxy Configuration) \\
+		\rowcolor{lightgray}Authentication           & JWT tokens + optional TOTP 2FA                                              \\
+		Password hashing                             & bcrypt (Spring Security default)                                            \\
+		\rowcolor{lightgray}Infrastructure           & Docker containers, PostgreSQL, Redis, RabbitMQ                              \\
 		\bottomrule
 	\end{tabularx}
 \end{center}
