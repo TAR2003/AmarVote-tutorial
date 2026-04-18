@@ -261,7 +261,6 @@ The Owner maintains a registry of permitted email addresses. Each entry in the l
 \begin{itemize}
 	\item The user's \uifield{email address}
 	\item The \uifield{assigned role} (Owner, Admin, or User)
-	\item Whether the user \uifield{can create elections} (a permission that can be granted independently of role)
 \end{itemize}
 
 \subsection{Adding Individual Users}
@@ -272,7 +271,6 @@ The Owner maintains a registry of permitted email addresses. Each entry in the l
 	\item Click \uibutton{Add User}.
 	\item Enter the email address in the \uifield{Email} field.
 	\item Select the appropriate role from the \uifield{Role} dropdown.
-	\item Toggle \uifield{Can Create Elections} if applicable.
 	\item Click \uibutton{Save}.
 \end{enumerate}
 
@@ -295,7 +293,7 @@ For adding many users at once:
 \end{enumerate}
 
 \begin{tcolorbox}[warnbox]
-	Duplicate email entries in the CSV will be ignored. If an email already exists in the system, its role will be \textbf{updated} to the value in the CSV, not duplicated.
+	Duplicate email entries in the CSV will be ignored. If an email already exists in the system, it will be ignored, not duplicated.
 \end{tcolorbox}
 
 \section{Role Capabilities Summary}
@@ -383,18 +381,18 @@ After your account is created, you can enable Two-Factor Authentication using \t
 
 \begin{enumerate}
 	\item Log in to your new account.
-	\item Click your profile avatar in the top-right corner and select \uimenu{Profile Settings}.
-	\item Scroll to the \uimenu{Security} section and click \uibutton{Enable Two-Factor Authentication}.
+	\item Click your profile avatar in the top-right corner.
+	\item Click \uibutton{Enable Two-Factor Authentication}.
 	\item A QR code will be displayed on screen.
-	\item Open the Google Authenticator app on your smartphone.
+	\item Open the Google/Microsoft Authenticator app on your smartphone.
 	\item Tap the \textbf{+} button and select \uimenu{Scan a QR code}.
 	\item Point your camera at the QR code on screen.
 	\item Google Authenticator will display a 6-digit rotating code. Enter this code in the \uifield{Verification Code} field on AmarVote.
-	\item Click \uibutton{Confirm} to activate 2FA.
+	\item Successful input will activate 2FA.
 \end{enumerate}
 
 \begin{tcolorbox}[warnbox]
-	\textbf{Back up your 2FA recovery codes!} AmarVote will display one-time recovery codes after 2FA is enabled. Print or save them somewhere safe. If you lose access to your authenticator app and have no recovery codes, you may be permanently locked out of your account.
+	\textbf{Be Careful With Your 2FA!} If you lose access to your authenticator app you may be permanently locked out of your account.
 \end{tcolorbox}
 
 % ────────────────────────────────────────────────────────────────────────────
@@ -431,7 +429,7 @@ If you have 2FA enabled:
 \begin{enumerate}
 	\item On the login page, click \uimenu{Forgot Password?}.
 	\item Enter your registered email address and click \uibutton{Send Reset Link}.
-	\item Check your email for a password reset link (valid for 15 minutes).
+	\item Check your email for a password reset link (valid for some minutes).
 	\item Click the link and set a new password.
 \end{enumerate}
 
@@ -538,7 +536,7 @@ For each candidate:
 \begin{enumerate}
 	\item Click \uibutton{Add Candidate}.
 	\item Enter the \uifield{Candidate Name}.
-	\item Enter the \uifield{Party Name} (optional).
+	\item Enter the \uifield{Party Name}.
 	\item Upload a \uifield{Candidate Photo} (optional, JPG/PNG, max 2 MB).
 	\item Upload a \uifield{Party Logo} (optional).
 	\item Repeat for each candidate.
@@ -599,21 +597,17 @@ Each guardian must complete Phase 1 independently:
 	\item You will be prompted to create a \textbf{Guardian Password}. This password is used to encrypt your private key using AES-256 (a military-grade symmetric encryption standard).
 	\item \textbf{Important:} Click \uibutton{Generate Secure Password} to let the system generate a random, strong password for you, \emph{or} enter your own password in the field.
 	\item Click \uibutton{Submit Key Pair}.
-	\item Your browser will automatically \textbf{download an encrypted private key file} (\texttt{.json} or \texttt{.enc}) to your computer.
+	\item Your browser will automatically \textbf{download an encrypted private key file} (\texttt{.txt}) to your computer.
 	\item Your \textbf{public key} is stored in the AmarVote database. Your \textbf{private key} is stored \emph{only} on your device, encrypted with your guardian password.
 \end{enumerate}
 
 \begin{tcolorbox}[dangerbox]
-	\textbf{Critical --- Do not lose the following:}
-	\begin{enumerate}
-		\item The downloaded private key file
-		\item Your guardian password
-	\end{enumerate}
-	If you lose \emph{either}, you will not be able to participate in decryption. Depending on the quorum, this could prevent the election results from ever being tallied.
+	\textbf{Critical --- Do not lose the downloaded private key file}
+	If you lose that, you will not be able to participate in decryption. Depending on the quorum, this could prevent the election results from ever being decrypted.
 \end{tcolorbox}
 
 \begin{tcolorbox}[tipbox]
-	Store the private key file in a secure location --- an encrypted USB drive, a secure cloud vault, or your system's encrypted home directory. Store your guardian password in a password manager.
+	Store the private key file in a secure location --- an encrypted USB drive, a secure cloud vault, or your system's encrypted home directory. You dont need to store the guardian password, as it is stored in database using ML KEM 1024 post quantum encryption. 
 \end{tcolorbox}
 
 \subsection{Phase Transition Condition}
@@ -643,7 +637,7 @@ If G1 later loses their private key, any \emph{quorum} number of other guardians
 \begin{enumerate}
 	\item Navigate to the election's \uimenu{Guardian} tab.
 	\item You will see that \textbf{Phase 2: Backup Share Generation} is now active.
-	\item Click \uibutton{Upload Encrypted Key File} and select the \texttt{.enc} file you downloaded in Phase 1.
+	\item Click \uibutton{Upload Encrypted Key File} and select the \texttt{.txt} file you downloaded in Phase 1.
 	\item Enter your \uifield{Guardian Password} in the provided field. The system will temporarily decrypt your private key in memory to generate the shares.
 	\item Click \uibutton{Generate Backup Shares}.
 	\item The system will:
@@ -651,13 +645,13 @@ If G1 later loses their private key, any \emph{quorum} number of other guardians
 		      \item Decrypt your private key in memory.
 		      \item Split it into $(n-1)$ encrypted fragments (one per other guardian).
 		      \item Encrypt each fragment with the respective guardian's public key.
-		      \item Submit all encrypted fragments to the server.
+		      \item Store all encrypted fragments to the database.
 	      \end{enumerate}
 	\item A confirmation message will appear when Phase 2 is complete for you.
 \end{enumerate}
 
 \begin{tcolorbox}[warnbox]
-	Your password and decrypted private key are used only in-browser during this step. They are \textbf{never transmitted} to the server in decrypted form. The server only receives the encrypted backup shares.
+	Your password and decrypted private key are used only in-memory during this step. They are \textbf{never stored} in the database. The database only stores the encrypted backup shares.
 \end{tcolorbox}
 
 \subsection{Phase 2 Transition Condition}
@@ -672,12 +666,12 @@ When all guardians have completed Phase 2, the admin is notified and Phase 3 bec
 \subsection{Admin Actions --- Phase 3}
 
 \begin{enumerate}
-	\item Log in as the election administrator.
-	\item Navigate to the election's management page.
+	\item Log in as the election administrator email.
+	\item Navigate to the election's guardian tab.
 	\item You will see the \textbf{Phase 3: Schedule Election} panel is now active.
 	\item Select the \uifield{Election Start Date and Time}.
 	\item Select the \uifield{Election End Date and Time}.
-	\item Click \uibutton{Publish Election}.
+	\item Click \uibutton{Activate Election}.
 	\item The election status changes to \textbf{Scheduled}. Voters will be able to vote starting from the specified start time.
 \end{enumerate}
 
@@ -692,7 +686,7 @@ When all guardians have completed Phase 2, the admin is notified and Phase 3 bec
 \chapter{Voting --- Casting Your Encrypted Ballot}
 \label{ch:voting}
 
-AmarVote uses an \textbf{end-to-end verifiable} voting protocol. Your ballot is encrypted \emph{before} it is submitted to the server --- the server never sees how you voted in plain text.
+AmarVote uses an \textbf{end-to-end verifiable} voting protocol. Your ballot is encrypted \emph{before} it is stored in the database in encrypted form, the database never stores your vote is plaintext.
 
 \section{Accessing the Voting Booth}
 
@@ -776,7 +770,7 @@ When you are satisfied that the system is working correctly and ready to cast yo
 	\item Re-select your candidate(s) in the voting booth.
 	\item Click \uibutton{Create Encrypted Ballot}.
 	\item Click \uibutton{Cast Ballot} (do \emph{not} click Challenge this time).
-	\item A confirmation dialog will appear. Review and click \uibutton{Confirm \& Cast Vote}.
+	
 \end{enumerate}
 
 \begin{tcolorbox}[dangerbox]
@@ -829,7 +823,7 @@ Either the election admin or any guardian may start the tally process.
 
 \begin{enumerate}
 	\item Navigate to the election page after the election has closed.
-	\item In the \uimenu{Tally} or \uimenu{Results} tab, click \uibutton{Initiate Tally}.
+	\item In the \uimenu{Tally} or \uimenu{Results} tab, click \uibutton{Create/Check Tally}.
 	\item The system will begin processing. This involves:
 	      \begin{itemize}
 		      \item Retrieving all cast encrypted ballots from the database.
@@ -861,16 +855,16 @@ This is the final cryptographic phase. The encrypted tally can only be decrypted
 	\item Click \uibutton{Submit Credentials \& Decrypt}.
 	\item The system will:
 	      \begin{enumerate}
-		      \item Decrypt your private key in-browser using your password.
+		      \item Decrypt your private key using your password (stored in database encrypted by ML KEM 1024).
 		      \item Apply your private key to each tally chunk --- producing \textbf{partial decryptions} for your share.
 		      \item Generate \textbf{compensated decryptions} for all other guardians (using the encrypted backup shares from Phase 2, decrypted with your private key). This allows the system to substitute for absent guardians.
-		      \item Submit all partial and compensated decryptions to the server.
+		      \item Store all partial and compensated decryptions to the database.
 	      \end{enumerate}
 	\item A confirmation message is displayed when your decryption contribution is submitted.
 \end{enumerate}
 
 \begin{tcolorbox}[warnbox]
-	The partial decryption process may take several minutes depending on the number of tally chunks. Do not close the browser tab while decryption is running.
+	The partial decryption process may take several minutes depending on the number of tally chunks. You can close the browser tab while decryption is running.
 \end{tcolorbox}
 
 \section{Combining Decryption Shares (Admin or Guardian)}
@@ -878,7 +872,7 @@ This is the final cryptographic phase. The encrypted tally can only be decrypted
 Once at least \emph{quorum} guardians have submitted their partial decryptions:
 
 \begin{enumerate}
-	\item Navigate to the election's \uimenu{Tally} tab.
+	\item Navigate to the election's \uimenu{Results} tab.
 	\item The \uibutton{Combine Decryption Shares} button will become active.
 	\item Click \uibutton{Combine Decryption Shares}.
 	\item The system mathematically combines all submitted partial and compensated decryption shares to produce the \textbf{final plaintext tally}.
@@ -903,10 +897,8 @@ AmarVote is designed to be \textbf{fully auditable}. Every voter, every observer
 After the results are published:
 
 \begin{enumerate}
-	\item Navigate to the election page and open the \uimenu{Verification} tab.
-	\item Click \uimenu{Verify My Ballot}.
-	\item Enter your \uifield{Ballot Tracking Code} (from the receipt email).
-	\item Enter your \uifield{Ballot Hash} (from the receipt email).
+	\item Navigate to the election page and open the \uimenu{Verify your vote} tab.
+	\item Click \uimenu{Upload} and upload your ballot receipt you received in the email after your encrypted ballot was cast.
 	\item Click \uibutton{Verify}.
 \end{enumerate}
 
@@ -943,9 +935,9 @@ All election data (except private keys) is publicly available for independent au
 \begin{enumerate}
 	\item Navigate to the election's \uimenu{Verification} tab.
 	\item Click \uibutton{Download Election Data}.
-	\item The download package includes:
+	\item The download options:
 	      \begin{itemize}
-		      \item All encrypted ballots
+		      \item All encrypted ballots for chunks
 		      \item Public keys of all guardians
 		      \item The encrypted tally
 		      \item All partial decryptions and proofs
@@ -954,7 +946,7 @@ All election data (except private keys) is publicly available for independent au
 \end{enumerate}
 
 \begin{tcolorbox}[notebox]
-	Any technically capable third party can use this downloaded data to re-verify the entire election independently using the ElectionGuard specification. This is the gold standard of election transparency.
+	Any technically capable third party can use this downloaded data to re-verify the entire election independently using the ElectionGuard specification.
 \end{tcolorbox}
 
 % ════════════════════════════════════════════════════════════════════════════
@@ -972,7 +964,8 @@ If the number of available guardians meets or exceeds the quorum threshold, the 
 No. The system enforces a one-final-ballot-per-voter policy. While you can create and challenge multiple encrypted ballots (for verification purposes), casting your vote is a one-time action.
 
 \section*{Is my identity linked to my ballot?}
-Your voter receipt email contains a Ballot Tracking Code and Hash. These identifiers are mathematically derived from the \emph{encrypted} ballot --- they do not reveal your identity or your vote. The public tally list contains tracking codes but no voter names.
+Your voter receipt email contains a Ballot Tracking Code and Hash. Ballot hash mathematically derived from the \emph{encrypted} ballot --- they do not reveal your identity or your vote. The public tally list contains tracking codes but no voter names.
+But for your privacy do not share the tracking code or ballot hash with anyone else, as they could be used to identify your encrypted ballot in the public tally. Though the ballot will still be encrypted, it is best practice to keep your receipt information private.
 
 \section*{What is the Benaloh Challenge for?}
 It is a cryptographic proof that the encryption software is working correctly --- that the encrypted ballot represents what you actually selected. It provides mathematical confidence without revealing your vote to the server.
@@ -992,7 +985,7 @@ Immediately notify the election administrator. If the remaining guardians still 
 		\rowcolor{lightgray}Key distribution         & Shamir's Secret Sharing (threshold scheme)            \\
 		Ballot verification                          & Zero-knowledge proofs included with each ballot       \\
 		\rowcolor{lightgray}Guardian backup          & Encrypted with each guardian's public key             \\
-		Transit security                             & HTTPS/TLS (Nginx production configuration)            \\
+		Transit security                             & HTTPS/TLS (Nginx production configuration + Cloudflare Proxy Configuration)            \\
 		\rowcolor{lightgray}Authentication           & JWT tokens + optional TOTP 2FA                        \\
 		Password hashing                             & bcrypt (Spring Security default)                      \\
 		\rowcolor{lightgray}Infrastructure           & Docker containers, PostgreSQL, Redis, RabbitMQ        \\
