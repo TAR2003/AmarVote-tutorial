@@ -394,7 +394,7 @@ Before using any feature of AmarVote, every participant --- voter, guardian, or 
 \subsection{Step 4 --- Set Your Password}
 
 \begin{enumerate}
-	\item Enter a strong password in the \uifield{Password} field. Recommended: at least 12 characters, including uppercase letters, numbers, and symbols.
+	\item Enter a strong password in the \uifield{Password} field. Recommended: at least 8 characters, including uppercase letters, numbers, and symbols.
 	\item Re-enter the same password in the \uifield{Confirm Password} field.
 	\item Click \uibutton{Create Account}.
 \end{enumerate}
@@ -516,7 +516,7 @@ This chapter is intended for Admins (and Users with election-creation permission
 	\end{tabularx}
 \end{center}
 
-\screenfig{createElectionTitleDescriptionMaxChoice.png}{Election creation form --- title, description, and maximum choice configuration}
+\screenfig{createElectionTitleDescription.png}{Election creation form --- title, description, and maximum choice configuration}
 
 \section{Voter Configuration}
 
@@ -572,7 +572,7 @@ The \textbf{quorum} is the minimum number of guardians who must cooperate to dec
 
 \begin{enumerate}
 	\item In the \uifield{Quorum} field, enter a number between 1 and the total number of guardians.
-	\item Recommended: set quorum to at least $\lceil n/2 \rceil + 1$ where $n$ is the total guardian count (a simple majority plus one).
+	\item Recommended: set quorum to at least $\lfloor n/2 \rfloor + 1$ where $n$ is the total guardian count (a simple majority plus one).
 \end{enumerate}
 
 \begin{tcolorbox}[warnbox]
