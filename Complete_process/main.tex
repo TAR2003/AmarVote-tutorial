@@ -249,17 +249,18 @@ AmarVote is built on the \textbf{ElectionGuard} specification developed by Micro
 		\toprule
 		\rowcolor{primaryblue}\color{white}Role & \color{white}Responsibilities                                                                                \\
 		\midrule
-		\rowcolor{lightgray}Owner               & Full platform control: manages the authorised-user list, assigns roles, and sets global permissions.         \\
-		Admin                                   & Creates and administers elections, configures election parameters, and oversees the tally phase.             \\
-		\rowcolor{lightgray}Guardian            & Participates in the cryptographic key ceremony; holds a share of the decryption key needed to tally results. \\
-		Voter                                   & Registers, receives election access, casts an encrypted ballot, and independently verifies the result.       \\
+		\rowcolor{lightgray}Owner               & Full platform control: manages the authorised-user list, assigns roles, and sets global permissions.                                        \\
+		App Admin                               & A platform-level administrator who can create and manage elections on AmarVote. There can be an unlimited number of App Admins on the platform. \\
+		\rowcolor{lightgray}Election Admin      & The specific user who created a particular election; responsible for configuring, scheduling, and overseeing that election. Each election has exactly one Election Admin. Note: ``Election Admin'' is simply a term used to identify the creator of a specific election --- the user's platform role remains App Admin (or Owner). \\
+		Guardian                                & Participates in the cryptographic key ceremony; holds a share of the decryption key needed to tally results.                               \\
+		\rowcolor{lightgray}Voter               & Registers, receives election access, casts an encrypted ballot, and independently verifies the result.                                      \\
 		\bottomrule
 	\end{tabularx}
 \end{center}
 
 \vspace{0.5cm}
 \begin{tcolorbox}[notebox]
-	\textbf{Permission hierarchy:} Owner $>$ Admin $>$ User (voter). The Owner can elevate or restrict any account. All roles require a registered account.
+	\textbf{Permission hierarchy:} Owner $>$ App Admin $>$ User (voter). The Owner can elevate or restrict any account. All roles require a registered account. An \textbf{Election Admin} is the creator of a specific election --- there is exactly one Election Admin per election --- but this does not change their platform-level role (App Admin or Owner).
 \end{tcolorbox}
 
 % ════════════════════════════════════════════════════════════════════════════
@@ -280,7 +281,7 @@ The Owner maintains a registry of permitted email addresses. Each entry in the l
 
 \begin{itemize}
 	\item The user's \uifield{email address}
-	\item The \uifield{assigned role} (Owner, Admin, or User)
+	\item The \uifield{assigned role} (Owner, App Admin, or User)
 \end{itemize}
 
 \subsection{Adding Individual Users}
@@ -331,7 +332,7 @@ For adding many users at once:
 \begin{center}
 	\begin{tabularx}{0.95\textwidth}{>{\bfseries}l XXXX}
 		\toprule
-		\rowcolor{primaryblue}\color{white}Capability           & \color{white}Owner                  & \color{white}Admin                  & \color{white}User                   \\
+		\rowcolor{primaryblue}\color{white}Capability           & \color{white}Owner                  & \color{white}App Admin             & \color{white}User                   \\
 		\midrule
 		\rowcolor{lightgray}Manage authorised-user list         & \textcolor{successborder}{\faCheck} & \textcolor{dangerborder}{\faTimes}  & \textcolor{dangerborder}{\faTimes}  \\
 		Assign roles                                            & \textcolor{successborder}{\faCheck} & \textcolor{dangerborder}{\faTimes}  & \textcolor{dangerborder}{\faTimes}  \\
@@ -345,67 +346,99 @@ For adding many users at once:
 \end{center}
 
 \begin{tcolorbox}[notebox]
-	\textbf{Election creation setting:} The Owner can enable a global setting allowing \emph{all} users (not just admins) to create elections. When this setting is active, both Admins and regular Users will see the \uimenu{Create Election} button in their menu.
+	\textbf{Election creation setting:} The Owner can enable a global setting allowing \emph{all} users (not just App Admins) to create elections. When this setting is active, both App Admins and regular Users will see the \uimenu{Create Election} button in their menu.
 \end{tcolorbox}
 
 % ────────────────────────────────────────────────────────────────────────────
 \chapter{Account Registration}
 \label{ch:registration}
 
-Before using any feature of AmarVote, every participant --- voter, guardian, or admin --- must create a personal account. The registration process involves email verification and optional two-factor authentication setup.
+Before using any feature of AmarVote, every participant --- voter, guardian, or App Admin --- must create a personal account. The registration process is a guided, multi-step flow that takes only a few minutes and involves email verification followed by an optional two-factor authentication setup.
 
 \section{Prerequisites}
 
 \begin{tcolorbox}[warnbox]
-	You can only register if your email address has been added to the Authorised User List by an Owner. If you attempt to register with an unlisted email, the system will reject your request.
+	You can only register if your email address has been added to the Authorised User List by an Owner. If you attempt to register with an unlisted email, the system will reject your request before any account is created.
 \end{tcolorbox}
+
+\section{Registration Workflow Overview}
+
+The full registration journey follows this sequence:
+
+\begin{center}
+	\textbf{Home} \;\faArrowRight\; \textbf{Register} \;\faArrowRight\; \textbf{Enter Email} \;\faArrowRight\; \textbf{Code Sent} \;\faArrowRight\; \textbf{Enter Code} \;\faArrowRight\; \textbf{Set Password} \;\faArrowRight\; \textbf{Account Created}
+\end{center}
+
+Each step is described in detail below, with screenshots corresponding to exactly what you will see on screen.
 
 \section{Step-by-Step Registration}
 
-\subsection{Step 1 --- Navigate to Registration}
+\subsection{Step 1 --- The AmarVote Home Page}
 
 \begin{enumerate}
-	\item Open your web browser and go to the AmarVote application URL.
-	\item On the landing page, click \uibutton{Register} or navigate to \texttt{/register}.
+	\item Open your web browser and navigate to the AmarVote application URL provided by your organisation.
+	\item You will arrive at the \textbf{AmarVote home page}.
+
+	      \screenfig{homeAmarVote.png}{The AmarVote home page --- your entry point to the platform}
+
+	\item Click the \uibutton{Register} button, or navigate directly to \texttt{/register} in your browser's address bar.
 \end{enumerate}
 
 \subsection{Step 2 --- Submit Your Email Address}
 
 \begin{enumerate}
-	\item Enter your \uifield{Email Address} in the provided field. This must exactly match the email your Owner added to the authorised list.
+	\item The registration form will open, prompting you for your email address.
+
+	      \screenfig{verifyEmailForRegistering.png}{The registration page --- enter the email address that was added to the Authorised User List}
+
+	\item Enter your \uifield{Email Address} in the provided field. This must \textbf{exactly match} the email address the Owner or Admins added to the Authorised User List.
 	\item Click \uibutton{Send Verification Code}.
-	\item The system will send a \textbf{One-Time Password (OTP)} to your email inbox.
+	\item The system will dispatch a \textbf{One-Time Password (OTP)} to your inbox and display a confirmation screen.
+
+	      \screenfig{codeSentToEmail.png}{The verification code has been sent to your email}
 \end{enumerate}
 
 \begin{tcolorbox}[tipbox]
-	Check your spam or junk folder if you do not receive the email within two minutes. The OTP is typically valid for \textbf{10 minutes}.
+	Check your spam or junk folder if you do not receive the email within two minutes. The OTP is typically valid for \textbf{10 minutes}. If it expires, return to the registration page and request a new code.
 \end{tcolorbox}
 
-\subsection{Step 3 --- Verify Your Email}
+\subsection{Step 3 --- Enter the Verification Code}
 
 \begin{enumerate}
-	\item Open the email from AmarVote.
-	\item Copy the 6-digit verification code.
-	\item Return to the registration page and enter the code in the \uifield{Verification Code} field.
+	\item Open the email from AmarVote and locate the \textbf{6-digit verification code}.
+	\item Return to the registration page (it may still be open in your browser).
+	\item Enter the code in the \uifield{Verification Code} field.
+
+	      \screenfig{enterTheVerificationCode.png}{Entering the 6-digit OTP received by email to verify your address}
+
 	\item Click \uibutton{Verify Email}.
-	\item If successful, you will be advanced to the password setup step.
+	\item If the code is correct and has not expired, you will be automatically advanced to the password setup step.
 \end{enumerate}
+
+\begin{tcolorbox}[notebox]
+	The verification code is single-use. Once entered successfully, it cannot be reused. If you enter an incorrect code, request a new one from the registration page.
+\end{tcolorbox}
 
 \subsection{Step 4 --- Set Your Password}
 
 \begin{enumerate}
-	\item Enter a strong password in the \uifield{Password} field. Recommended: at least 8 characters, including uppercase letters, numbers, and symbols.
-	\item Re-enter the same password in the \uifield{Confirm Password} field.
+	\item The password creation screen will appear.
+
+	      \screenfig{setYourPassword.png}{The password setup screen --- choose a strong password for your AmarVote account}
+
+	\item Enter a strong password in the \uifield{Password} field. A strong password contains at least \textbf{8 characters} and mixes uppercase letters, lowercase letters, numbers, and symbols.
+	\item Re-enter the identical password in the \uifield{Confirm Password} field.
 	\item Click \uibutton{Create Account}.
+	\item Your account will be created and you will be redirected to the login page (or automatically signed in, depending on your platform configuration).
 \end{enumerate}
 
 \begin{tcolorbox}[dangerbox]
-	\textbf{Never share your password.} AmarVote staff will never ask for your password. Store it in a secure password manager.
+	\textbf{Never share your password.} AmarVote staff will never ask for your password. Store it securely in a trusted password manager such as Bitwarden, 1Password, or your browser's built-in vault.
 \end{tcolorbox}
 
-\section{Two-Factor Authentication (2FA) --- Optional but Recommended}
+\section{Two-Factor Authentication (2FA) --- Optional but Strongly Recommended}
 
-After your account is created, you can enable Two-Factor Authentication using \textbf{Google Authenticator} (or any TOTP-compatible app such as Authy or Microsoft Authenticator).
+After your account is created, you can enable Two-Factor Authentication (2FA) using \textbf{Google Authenticator} or any TOTP-compatible app (such as Authy or Microsoft Authenticator). 2FA adds a critical second layer of security --- even if someone learns your password, they cannot log in without your physical device.
 
 \subsection{Enabling 2FA}
 
@@ -415,56 +448,90 @@ After your account is created, you can enable Two-Factor Authentication using \t
 
 	      \screenfig{goToProfileMenu.png}{Accessing the profile menu from the top-right corner}
 
-	\item Click \uibutton{Enable Two-Factor Authentication}.
-	\item A QR code will be displayed on screen.
+	\item Click \uibutton{Enable Two-Factor Authentication}. The 2FA setup screen will appear.
+
+	      \screenfig{enable2FactorAuthentication.png}{The Two-Factor Authentication setup screen, displaying the QR code to scan with your authenticator app}
+
 	\item Open the Google/Microsoft Authenticator app on your smartphone.
 	\item Tap the \textbf{+} button and select \uimenu{Scan a QR code}.
-	\item Point your camera at the QR code on screen.
-	\item Google Authenticator will display a 6-digit rotating code. Enter this code in the \uifield{Verification Code} field on AmarVote.
-	\item Successful input will activate 2FA.
+	\item Point your camera at the QR code displayed on screen.
+	\item Your authenticator app will register AmarVote and begin displaying a rotating \textbf{6-digit code}.
+	\item Enter the current code in the \uifield{Verification Code} field on AmarVote and confirm.
+	\item Successful input will activate 2FA on your account immediately.
 \end{enumerate}
 
 \begin{tcolorbox}[warnbox]
-	\textbf{Be Careful With Your 2FA!} If you lose access to your authenticator app you may be permanently locked out of your account.
+	\textbf{Safeguard your authenticator access.} If you lose access to the device running your authenticator app, you may be permanently locked out of your AmarVote account. Consider storing a backup code in a secure location, or using an authenticator app that supports encrypted cloud backup.
 \end{tcolorbox}
 
 % ────────────────────────────────────────────────────────────────────────────
 \chapter{Logging In}
 \label{ch:login}
 
+Once your account has been created, logging in to AmarVote is a straightforward process. The login flow begins from the same home page used for registration.
+
+\section{Login Workflow Overview}
+
+\begin{center}
+	\textbf{Home} \;\faArrowRight\; \textbf{Login} \;\faArrowRight\; \textbf{Enter Credentials} \;\faArrowRight\; \textbf{Dashboard}
+\end{center}
+
+If Two-Factor Authentication is enabled, an additional step is inserted after credential entry:
+
+\begin{center}
+	\textbf{Home} \;\faArrowRight\; \textbf{Login} \;\faArrowRight\; \textbf{Enter Credentials} \;\faArrowRight\; \textbf{Enter 2FA Code} \;\faArrowRight\; \textbf{Dashboard}
+\end{center}
+
 \section{Standard Login}
 
 \begin{enumerate}
-	\item Navigate to the AmarVote application and click \uibutton{Login} or go to \texttt{/login}.
+	\item Open your web browser and navigate to the AmarVote application URL. You will arrive at the \textbf{AmarVote home page}.
+
+	      \screenfig{homeAmarVote.png}{The AmarVote home page --- click \textit{Login} to proceed to the sign-in screen}
+
+	\item Click \uibutton{Login} on the home page, or navigate directly to \texttt{/login}.
+	\item The \textbf{login screen} will appear.
+
+	      \screenfig{loginScreen.png}{The AmarVote login screen --- enter your registered email address and password}
+
 	\item Enter your registered \uifield{Email Address}.
 	\item Enter your \uifield{Password}.
-	\item Click \uibutton{Sign In}.
+	\item Click \uibutton{Continue}.
+	\item Upon successful authentication, you will be redirected to your \textbf{Dashboard}.
 \end{enumerate}
 
 \section{Login with Two-Factor Authentication}
 
-If you have 2FA enabled:
+If you have 2FA enabled on your account, the login flow includes one additional verification step after your credentials are accepted:
 
 \begin{enumerate}
-	\item Complete the email and password fields as above.
-	\item Click \uibutton{Sign In}.
+	\item Complete Steps 1--5 of the Standard Login above (navigate to home, go to login screen, enter email and password).
+	\item Click \uibutton{Continue}.
 	\item A prompt will appear asking for your \uifield{Authenticator Code}.
-	\item Open the Google Authenticator app and copy the current 6-digit code for AmarVote.
-	\item Enter the code and click \uibutton{Verify}.
+	\item Open the Google Authenticator (or equivalent TOTP) app on your smartphone and copy the current \textbf{6-digit code} displayed for AmarVote.
+	\item Enter the code in the prompt and click \uibutton{Verify}.
+	\item Upon successful verification, you will be redirected to your Dashboard.
 \end{enumerate}
 
 \begin{tcolorbox}[notebox]
-	The TOTP code rotates every 30 seconds. If the code expires while you are typing, wait for the next code to appear and use that one.
+	TOTP codes rotate every \textbf{30 seconds}. If the code expires while you are typing, simply wait for the next code to appear in your authenticator app and use that one instead.
 \end{tcolorbox}
 
 \section{Forgot Password}
 
+If you have forgotten your password, AmarVote provides a secure self-service reset flow:
+
 \begin{enumerate}
-	\item On the login page, click \uimenu{Forgot Password?}.
-	\item Enter your registered email address and click \uibutton{Send Reset Link}.
-	\item Check your email for a password reset verification code (valid for some minutes).
-	\item Verify the code and set a new password.
+	\item On the login screen, click \uimenu{Forgot Password?}.
+	\item Enter your registered \uifield{Email Address} and click \uibutton{Send Verification Code}.
+	\item Check your inbox for an email containing a \textbf{password reset verification code} (valid for a limited time).
+	\item Enter the verification code on the reset page, then choose and confirm your new password.
+	\item Once set, you may log in immediately with your new credentials.
 \end{enumerate}
+
+\begin{tcolorbox}[tipbox]
+	If the reset email does not arrive within a few minutes, check your spam or junk folder. The reset code is time-limited --- if it expires, return to the login page and request a fresh one.
+\end{tcolorbox}
 
 % ════════════════════════════════════════════════════════════════════════════
 \part{Election Administration}
@@ -473,10 +540,10 @@ If you have 2FA enabled:
 \chapter{Creating an Election}
 \label{ch:create-election}
 
-This chapter is intended for Admins (and Users with election-creation permission). It walks through every option available when setting up a new election.
+This chapter is intended for App Admins (and Users with election-creation permission). It walks through every option available when setting up a new election. The user who creates an election automatically becomes its \textbf{Election Admin} --- the sole administrator responsible for managing that specific election.
 
 \begin{tcolorbox}[warnbox]
-	The \uimenu{Create Election} button will only appear in your navigation menu if you have been granted election-creation permission. If you cannot see it, contact your Owner.
+	The \uimenu{Create Election} button will only appear in your navigation menu if you have been granted election-creation permission. If you cannot see it, contact AmarVote Owner or Admin.
 \end{tcolorbox}
 
 \section{Accessing the Election Creation Form}
@@ -511,7 +578,7 @@ This chapter is intended for Admins (and Users with election-creation permission
 		\rowcolor{primaryblue}\color{white}Setting & \color{white}Effect                                                                                                 \\
 		\midrule
 		\rowcolor{lightgray}Public                 & All registered users can see the election and its results.                                                          \\
-		Private                                    & Only invited voters, assigned guardians, and the election admin can view the election, its ballot, and its results. \\
+		Private                                    & Only invited voters, assigned guardians, and the Election Admin can view the election, its ballot, and its results. \\
 		\bottomrule
 	\end{tabularx}
 \end{center}
@@ -588,16 +655,14 @@ For each candidate:
 \begin{enumerate}
 	\item Click \uibutton{Add Candidate}.
 	\item Enter the \uifield{Candidate Name}.
-	\item Enter the \uifield{Party Name}.
 	\item Upload a \uifield{Candidate Photo} (optional, JPG/PNG, max 2 MB).
-	\item Upload a \uifield{Party Logo} (optional).
 	\item Repeat for each candidate.
 \end{enumerate}
 
 \screenfig{createElectionAddCandidates.png}{Adding candidates to the election ballot}
 
 \begin{tcolorbox}[tipbox]
-	Candidate photos and party logos significantly improve the voter experience, especially in large elections with many candidates. Providing them is strongly recommended.
+	Candidate photos significantly improve the voter experience, especially in large elections with many candidates. Providing them is strongly recommended.
 \end{tcolorbox}
 
 \subsection{Maximum Votes Per Voter}
@@ -722,30 +787,106 @@ If G1 later loses their private key, any \emph{quorum} number of other guardians
 
 Phase 3 begins only when \textbf{all} guardians have submitted their backup shares.
 
-\section{Phase 3 --- Election Scheduling (Admin)}
+\section{Phase 3 --- Election Scheduling \& Notifications (Election Admin)}
 \label{sec:phase3}
 
-When all guardians have completed Phase 2, the admin is notified and Phase 3 becomes available.
+When all guardians have completed Phase 2, the Election Admin is notified and Phase 3 becomes available. This phase allows the Election Admin to set the election schedule, and optionally configure and send a professional reminder email to voters.
 
-\subsection{Admin Actions --- Phase 3}
+\begin{tcolorbox}[notebox]
+	\textbf{Election Admin reminder:} The term \emph{Election Admin} refers specifically to the user who created this election. There is exactly one Election Admin per election. All other platform-level App Admins do not have administrative access to elections they did not create.
+\end{tcolorbox}
+
+\subsection{Election Admin Actions --- Phase 3}
 
 \begin{enumerate}
-	\item Log in as the election administrator email.
-	\item Navigate to the election's guardian tab.
-	\item You will see the \textbf{Phase 3: Schedule Election} panel is now active.
-	\item Select the \uifield{Election Start Date and Time}.
-	\item Select the \uifield{Election End Date and Time}.
-	\item Click \uibutton{Activate Election}.
-
-	      \screenfig{createElectionSetTimeAndActivateElection.png}{Setting the election schedule and activating the election in Phase 3}
-
-	\item The election status changes to \textbf{Scheduled}. Voters will be able to vote starting from the specified start time.
+	\item Log in with the Election Admin account (the account that created this election).
+	\item Navigate to the election's \uimenu{Guardian} tab.
+	\item You will see the \textbf{Phase 3: Schedule Election \& Notifications} panel is now active.
 \end{enumerate}
 
-\screenfig{electionPageWithStartandFinishingTime.png}{Election page showing the confirmed start and finish times after activation}
+\screenfig{createElectionSetTimeAndActivateElection.png}{Phase 3 panel --- election scheduling and optional voter notification configuration}
+
+\subsubsection{Step A --- Setting the Election Start and End Times}
+
+The scheduling interface features a \textbf{modern, interactive date-and-time picker} designed for ease and precision:
+
+\begin{enumerate}
+	\item Click the \uifield{Election Start Date \& Time} field. A calendar widget will appear, allowing you to:
+	      \begin{itemize}
+		      \item Navigate months using the \textbf{left} and \textbf{right arrow} buttons.
+		      \item Click any \textbf{date} to select it. The selected date highlights immediately.
+		      \item Use the \textbf{hour} and \textbf{minute} scroll wheels (or type directly) to set the exact time. AM/PM toggle is available for 12-hour format, or the field accepts 24-hour format automatically.
+	      \end{itemize}
+	\item Repeat the same process for the \uifield{Election End Date \& Time} field.
+	\item The system will validate that the end time is after the start time. An error message will appear immediately if the selection is invalid.
+\end{enumerate}
+
+\begin{tcolorbox}[warnbox]
+	\textbf{Choose election times carefully.} Once the election is activated, the start and end times cannot be changed. Ensure you have accounted for your voters' time zones and any logistical constraints before proceeding.
+\end{tcolorbox}
+
+\subsubsection{Step B --- Configuring a Voter Reminder Email (Optional)}
+
+Below the scheduling fields, you will find the \textbf{Send Reminder Email} section:
+
+\begin{enumerate}
+	\item \textbf{Enable the Reminder Email:} Check the \uifield{Send Reminder Email to Voters} checkbox. When checked, the full reminder configuration panel expands beneath it.
+
+	\item \textbf{Email Receivers:}
+	      \begin{itemize}
+		      \item By default, \textbf{all voters on the election's voter list} are pre-populated as recipients. A scrollable list displays each recipient's email address, as there may be hundreds or thousands of voters.
+		      \item Each recipient entry has a \textbf{\texttimes{} (remove) button} on its right side. Click it to remove that specific voter from the reminder list.
+		      \item At the bottom of the receiver list, an \textbf{Add Receiver} field with an \uibutton{Add} button allows you to manually add any additional email address (e.g., a supervisor or observer not on the voter list).
+	      \end{itemize}
+
+	\item \textbf{Email Subject:}\\
+	      The \uifield{Subject} field is \textbf{pre-filled with a professional subject line}, for example:\\
+	      \emph{``Reminder: [Election Title] --- Voting is Now Open''}\\
+	      You may edit this to suit your context.
+
+	\item \textbf{Email Body:}\\
+	      The \uifield{Message Body} text area is \textbf{pre-filled with a complete, professional email body} that automatically includes:
+	      \begin{itemize}
+		      \item The \textbf{election title}.
+		      \item The \textbf{election description}.
+		      \item The \textbf{direct link} to the election page on AmarVote.
+		      \item The \textbf{voting start and end times}.
+		      \item A closing note encouraging voters to reach out if they have questions.
+	      \end{itemize}
+	      You may freely edit the body text. The election link and other dynamic fields will be substituted with real values when the email is sent.
+
+	\item \textbf{Reminder Send Time:}\\
+	      Use the \uifield{Reminder Time} date-and-time picker to select \emph{when} the reminder emails will be sent. This uses the same modern, interactive picker as the start/end time fields:
+	      \begin{itemize}
+		      \item Select the date using the calendar widget.
+		      \item Set the hour and minute using the scroll wheels or direct input.
+		      \item The reminder time must be \textbf{before the election end time}.
+		      \item The reminder time can be set \emph{before} the election start time (e.g., to notify voters in advance) or \emph{during} the election period.
+	      \end{itemize}
+\end{enumerate}
+
+\screenfig{createElectionReminder.png}{Voter reminder email configuration --- receivers list with scroll and remove/add controls, pre-filled subject and body, and reminder send time picker}
 
 \begin{tcolorbox}[tipbox]
-	Notify voters in advance of the election dates. If you uploaded a voter CSV, consider sending a separate reminder email to all voters with the election start time and access link.
+	The default email body is professionally written and ready to send without modification. However, personalising it --- for example, adding context about why the election matters or instructions specific to your organisation --- will significantly improve voter engagement and turnout.
+\end{tcolorbox}
+
+\begin{tcolorbox}[notebox]
+	If you do \emph{not} wish to send a reminder, simply leave the \uifield{Send Reminder Email to Voters} checkbox unchecked. The scheduling step will still be completed normally when you activate the election.
+\end{tcolorbox}
+
+\subsubsection{Step C --- Activating the Election}
+
+\begin{enumerate}
+	\item After setting the start and end times (and optionally configuring the reminder email), click \uibutton{Activate Election}.
+	\item The election status changes to \textbf{Scheduled}. Voters will be able to vote starting from the specified start time.
+	\item If a reminder was configured, the system will automatically dispatch the reminder emails at the specified reminder time.
+\end{enumerate}
+
+\screenfig{electionPageWithStartandFinishingTime.png}{Election page confirming the scheduled start and end times after activation}
+
+\begin{tcolorbox}[tipbox]
+	After activation, share the election link with your voters so they can bookmark it. The link is visible on the election's main page and is also included automatically in the reminder email body if you enabled one.
 \end{tcolorbox}
 
 % ════════════════════════════════════════════════════════════════════════════
@@ -793,7 +934,7 @@ AmarVote uses an \textbf{end-to-end verifiable} voting protocol. Your ballot is 
 \section{Selecting Your Candidate(s)}
 
 \begin{enumerate}
-	\item The voting booth displays all candidates with their names, party affiliations, and photos (if uploaded).
+	\item The voting booth displays all candidates with their names and photos (if uploaded).
 	\item Select the candidate(s) you wish to vote for. The interface will show how many you may select (e.g., ``Select up to 2 candidates'').
 	\item A checkmark will appear next to each selected candidate.
 	\item Once you have made your selection(s), click \uibutton{Create Encrypted Ballot}.
@@ -920,7 +1061,7 @@ After the election closes, the encrypted ballots must be tallied and then decryp
 
 \begin{center}
 	\begin{tikzpicture}[every node/.style={font=\small,draw,rounded corners,text width=3.5cm,align=center}]
-		\node[fill=infoblue] (T1) at (0,0) {Initiate Tally\\(Admin or Guardian)};
+		\node[fill=infoblue] (T1) at (0,0) {Initiate Tally\\(Election Admin or Guardian)};
 		\node[fill=lightgray] (T2) at (6.5,0) {Encrypted Ballots\\Chunked ($\sim$200/chunk)};
 		\node[fill=lightgray] (T3) at (13,0) {Chunk Tallies\\Created};
 		\node[fill=successgreen] (T4) at (13,-2.7) {Partial Decryption\\(Each Guardian)};
@@ -936,7 +1077,7 @@ After the election closes, the encrypted ballots must be tallied and then decryp
 
 \section{Initiating the Tally}
 
-Either the election admin or any guardian may start the tally process.
+Either the Election Admin or any guardian may start the tally process.
 
 \begin{enumerate}
 	\item Navigate to the election page after the election has closed.
@@ -1034,7 +1175,7 @@ This is the final cryptographic phase. The encrypted tally can only be decrypted
 	The partial decryption process may take several minutes depending on the number of tally chunks. You can close the browser tab while decryption is running.
 \end{tcolorbox}
 
-\section{Combining Decryption Shares (Admin or Guardian)}
+\section{Combining Decryption Shares (Election Admin or Guardian)}
 
 Once at least \emph{quorum} guardians have submitted their partial decryptions:
 
@@ -1108,7 +1249,7 @@ The system will confirm:
 \screenfig{ballotVerifiedSuccessfully.png}{Successful ballot verification --- the system confirms the ballot was recorded and unmodified}
 
 \begin{tcolorbox}[tipbox]
-	If the ballot hash does not match, this indicates potential tampering. Report this immediately to the election administrator and your national or institutional election authority.
+	If the ballot hash does not match, this indicates potential tampering. Report this immediately to the Election Admin and your national or institutional election authority.
 \end{tcolorbox}
 
 \section{Manual Ballot Lookup}
@@ -1161,7 +1302,7 @@ All election data (except private keys) is publicly available for independent au
 \chapter{Frequently Asked Questions}
 
 \section*{Can the administrator see how I voted?}
-No. Your ballot is encrypted using the combined public keys of all guardians before it is submitted. The administrator cannot decrypt individual ballots --- only the aggregate tally can be decrypted, and only with guardian cooperation.
+No. Your ballot is encrypted using the combined public keys of all guardians before it is submitted. Neither the Election Admin nor any App Admin can decrypt individual ballots --- only the aggregate tally can be decrypted, and only with guardian cooperation.
 
 \section*{What if a guardian is unavailable during decryption?}
 If the number of available guardians meets or exceeds the quorum threshold, the election can still be tallied. The backup shares generated during Phase 2 are used to compensate for absent guardians.
@@ -1177,7 +1318,7 @@ But for your privacy do not share the tracking code or ballot hash with anyone e
 It is a cryptographic proof that the encryption software is working correctly --- that the encrypted ballot represents what you actually selected. It provides mathematical confidence without revealing your vote to the server.
 
 \section*{What if I lose my guardian credentials?}
-Immediately notify the election administrator. If the remaining guardians still meet the quorum threshold, tallying can proceed without you (using compensated decryption). If your loss would drop available guardians below quorum, the election results may be unrecoverable.
+Immediately notify the Election Admin. If the remaining guardians still meet the quorum threshold, tallying can proceed without you (using compensated decryption). If your loss would drop available guardians below quorum, the election results may be unrecoverable.
 
 \chapter{Security Architecture Summary}
 
