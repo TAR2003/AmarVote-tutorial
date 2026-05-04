@@ -571,8 +571,8 @@ This is the main event. The Voting Booth is where you make your selection, creat
 
 After clicking \uibutton{Create Encrypted Ballot}, a confirmation message appears. Your ballot is now encrypted. You will see two buttons:
 \begin{itemize}
-	\item \uibutton{Challenge Ballot (Benaloh Challenge)} --- to verify the encryption is correct.
-	\item \uibutton{Cast Ballot} --- to submit your vote permanently.
+	\item \uibutton{Challenge Vote (Benaloh Challenge)} --- to verify the encryption is correct.
+	\item \uibutton{Cast Vote} --- to submit your vote permanently.
 \end{itemize}
 
 Both options are fully explained in the sections that follow.
@@ -602,7 +602,7 @@ The \textbf{Benaloh Challenge} is an optional but highly recommended step. It le
 After you click \uibutton{Create Encrypted Ballot} and see the confirmation message:
 
 \begin{enumerate}
-	\item Click \uibutton{Challenge Ballot (Benaloh Challenge)}.
+	\item Click \uibutton{Challenge Vote (Benaloh Challenge)}.
 	\item A selection interface will appear --- the same interface where you chose your candidates. This time, you are being asked: \emph{``What did you intend to vote for?''}
 	\item Select the same candidate(s) you originally chose.
 
@@ -667,14 +667,14 @@ When you are satisfied that the system is working correctly and are ready to sub
 \begin{enumerate}
 	\item If you have just performed a Benaloh Challenge, go back to the Voting Booth and re-select your candidate(s).
 	\item If you are continuing from a freshly created encrypted ballot (without challenging), you are already at this step.
-	\item You will see two buttons: \uibutton{Challenge Ballot (Benaloh Challenge)} and \uibutton{Cast Ballot}.
-	\item Click \uibutton{Cast Ballot}.
+	\item You will see two buttons: \uibutton{Challenge Vote (Benaloh Challenge)} and \uibutton{Cast Vote}.
+	\item Click \uibutton{Cast Vote}.
 \end{enumerate}
 
 \screenfig{castEncryptedBallot.png}{Clicking \textit{Cast Ballot} to submit your vote permanently}
 
 \begin{tcolorbox}[dangerbox]
-	\textbf{This action is permanent and irreversible.} Once you click \uibutton{Cast Ballot}, your vote is submitted to the system and \textbf{cannot be changed, recalled, or re-cast}. Make absolutely sure you have selected the right candidate(s) before casting.
+	\textbf{This action is permanent and irreversible.} Once you click \uibutton{Cast Vote}, your vote is submitted to the system and \textbf{cannot be changed, recalled, or re-cast}. Make absolutely sure you have selected the right candidate(s) before casting.
 \end{tcolorbox}
 
 After casting, the system will confirm that your vote has been recorded. If you attempt to vote again, the system will prevent you:
@@ -757,7 +757,7 @@ When results are ready, the election page will display them. You can then procee
 \end{enumerate}
 
 \begin{tcolorbox}[tipbox]
-	The receipt file is attached to the email you received after voting. It is typically a small \texttt{.json} or similar file. Save it to your device before attempting this step. If you cannot find the attachment, check the email again --- the tracking code and hash may also be in the email body, which you can use for manual verification (see Section~\ref{sec:manual}).
+	The receipt file is attached to the email you received after voting. It is typically a small \texttt{.txt} or similar file. Save it to your device before attempting this step. If you cannot find the attachment, check the email again --- the tracking code and hash may also be in the email body, which you can use for manual verification (see Section~\ref{sec:manual}).
 \end{tcolorbox}
 
 \section{Step 4 --- Read the Verification Result}
@@ -817,8 +817,8 @@ Use this chapter as a quick reference card to remind yourself of every step.
 	\item \textbf{Find the Election} --- Check your Dashboard or go to \uimenu{All Elections} and use the \uimenu{Ongoing} filter.
 	\item \textbf{Enter the Voting Booth} --- Open the election page and click the \uimenu{Voting Booth} tab.
 	\item \textbf{Select Your Candidate(s)} --- Click your choice(s) and click \uibutton{Create Encrypted Ballot}.
-	\item \textbf{Optionally Verify (Benaloh Challenge)} --- Click \uibutton{Challenge Ballot}, re-select the same candidate(s), click \uibutton{Submit Challenge}, and check the result. The challenged ballot is discarded. Repeat steps 4--5 as many times as you like.
-	\item \textbf{Cast Your Vote} --- When ready, click \uibutton{Cast Ballot}. This is permanent and irreversible.
+	\item \textbf{Optionally Verify (Benaloh Challenge)} --- Click \uibutton{Challenge Vote}, re-select the same candidate(s), click \uibutton{Submit Challenge}, and check the result. The challenged ballot is discarded. Repeat steps 4--5 as many times as you like.
+	\item \textbf{Cast Your Vote} --- When ready, click \uibutton{Cast Vote}. This is permanent and irreversible.
 	\item \textbf{Save Your Receipt} --- Check your email for the Voter Receipt containing your Ballot Tracking Code and Ballot Hash. Do not delete this email.
 \end{enumerate}
 
@@ -881,7 +881,7 @@ The following table summarises the key security guarantees AmarVote provides to 
 		\toprule
 		\rowcolor{primaryblue}\color{white}Property & \color{white}What It Means for You\\
 		\midrule
-		\rowcolor{lightgray}Vote Privacy & Your vote is encrypted before leaving your browser. No one --- not the admin, not the server --- can see how you voted.\\
+		\rowcolor{lightgray}Vote Privacy & Your vote is encrypted before being stored in the database, so that later no one --- not the admin, not the server --- can record how you voted.\\
 		Vote Integrity & Your encrypted ballot cannot be changed after submission. The hash in your receipt proves this.\\
 		\rowcolor{lightgray}Receipt-freeness & Your receipt proves your ballot was counted, but does not prove how you voted. You cannot be coerced by showing your receipt.\\
 		Verifiability & After results are published, you can independently confirm your ballot was recorded and counted using only your receipt and the public tally.\\
