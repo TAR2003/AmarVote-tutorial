@@ -657,7 +657,7 @@ For each candidate:
 \begin{enumerate}
 	\item Click \uibutton{Add Candidate}.
 	\item Enter the \uifield{Candidate Name}.
-	\item Upload a \uifield{Candidate Photo} (optional, JPG/PNG, max 2 MB).
+	\item Upload a \uifield{Candidate Photo} (optional, JPG/PNG, max 10 MB).
 	\item Repeat for each candidate.
 \end{enumerate}
 
@@ -716,7 +716,7 @@ Each guardian must complete Phase 1 independently:
 
 	\item Navigate to \uimenu{All Elections} and find the election. Open the election page and click the \uimenu{Guardian} tab.
 	\item You will see that \textbf{Phase 1: Key Pair Generation} is active.
-	\item Click \uibutton{Generate Credentials} as many times you like.
+	\item Click \uibutton{Generate Credentials} as many times as you like.
 	\item Every time you click, the system will cryptographically generate a new \textbf{asymmetric key pair} (a public key and a private key) specifically for this election.
 
 	      \screenfig{keyCeremonyKeypairGeneration.png}{Phase 1 key pair generation interface}
@@ -732,12 +732,12 @@ Each guardian must complete Phase 1 independently:
 \end{enumerate}
 
 \begin{tcolorbox}[dangerbox]
-	\textbf{Critical --- Do not lose the downloaded private key file}
+	\textbf{Critical --- Do not lose the downloaded private key file}.
 	If you lose that, you will not be able to participate in decryption. Depending on the quorum, this could prevent the election results from ever being decrypted.
 \end{tcolorbox}
 
 \begin{tcolorbox}[tipbox]
-	Store the private key file in a secure location --- an encrypted USB drive, a secure cloud vault, or your system's encrypted home directory. You dont need to store the guardian password, as it is stored in database using ML KEM 1024 post quantum encryption.
+	Store the private key file in a secure location --- an encrypted USB drive, a secure cloud vault, or your system's encrypted home directory. You don't need to store the guardian password, as it is stored in database using ML KEM 1024 post quantum encryption.
 \end{tcolorbox}
 
 \subsection{Phase Transition Condition}
@@ -776,6 +776,7 @@ If G1 later loses their private key, any \emph{quorum} number of other guardians
 		      \item Encrypt each fragment with the respective guardian's public key.
 		      \item Store all encrypted fragments to the database.
 	      \end{enumerate}
+	\item Click \uibutton{Submit Round 2} to upload the generated shares to the database.
 	\item A confirmation message will appear when Phase 2 is complete for you.
 \end{enumerate}
 
@@ -964,7 +965,7 @@ When you create an encrypted ballot for candidates A and B:
 	\item The challenge asks you to \emph{re-enter} your intended vote selection.
 	\item The system checks whether the re-entered selection matches the encrypted ballot.
 	\item If it matches, you receive confirmation that the encryption is correct.
-	\item If it does not match, the encryption would be revealed as incorrect (which should never happen in a properly functioning system).
+	\item a mismatch is flagged — this occurs if you entered wrong candidates or if the encryption is faulty (which should never happen in a properly functioning system).
 \end{enumerate}
 
 \begin{tcolorbox}[notebox]
@@ -1030,7 +1031,7 @@ When you are satisfied that the system is working correctly and ready to cast yo
 \screenfig{castEncryptedBallot.png}{Casting the final encrypted ballot --- the irreversible submission step}
 
 \begin{tcolorbox}[dangerbox]
-	\textbf{This action is irreversible.} Once you cast your ballot, it cannot be changed, recalled, or re-cast. Your vote is final.
+	\textbf{This action is irreversible.} Once you cast your ballot, it cannot be changed, recalled, or re-cast. Your vote in final.
 \end{tcolorbox}
 
 \screenfig{cantVoteMultipleTimes.png}{System confirmation that a voter cannot cast more than one final ballot}
