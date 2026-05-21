@@ -716,15 +716,15 @@ Each guardian must complete Phase 1 independently:
 
 	\item Navigate to \uimenu{All Elections} and find the election. Open the election page and click the \uimenu{Guardian} tab.
 	\item You will see that \textbf{Phase 1: Key Pair Generation} is active.
-	\item Click \uibutton{Generate Key Pair}.
-	\item The system will cryptographically generate an \textbf{asymmetric key pair} (a public key and a private key) specifically for this election.
+	\item Click \uibutton{Generate Credentials} as many times you like.
+	\item Every time you click, the system will cryptographically generate a new \textbf{asymmetric key pair} (a public key and a private key) specifically for this election.
 
 	      \screenfig{keyCeremonyKeypairGeneration.png}{Phase 1 key pair generation interface}
 
 	\item You will be prompted to create a \textbf{Guardian Password}. This password is used to encrypt your private key using AES-256 (a military-grade symmetric encryption standard).
-	\item \textbf{Important:} Click \uibutton{Generate Secure Password} to let the system generate a random, strong password for you, \emph{or} enter your own password in the field.
-	\item Click \uibutton{Submit Key Pair}.
-	\item Your browser will automatically \textbf{download an encrypted private key file} (\texttt{.txt}) to your computer.
+	\item \textbf{Important:} Click \uibutton{Generate Password} to let the system generate a random, strong password for you, \emph{or} enter your own password in the field.
+	\item Click \uibutton{Submit Round 1}.
+	\item Your browser will automatically \textbf{download an encrypted private key file} (\texttt{.txt}) to your computer. \textbf{You must allow downloading that file, else the election can not go forward}.
 
 	      \screenfig{keyCeremonyPrivateKeyDownload.png}{Downloading the encrypted private key file after key pair generation}
 
@@ -767,7 +767,7 @@ If G1 later loses their private key, any \emph{quorum} number of other guardians
 \begin{enumerate}
 	\item Navigate to the election's \uimenu{Guardian} tab.
 	\item You will see that \textbf{Phase 2: Backup Share Generation} is now active.
-	\item Click \uibutton{Upload Encrypted Key File} and select the \texttt{.txt} file you downloaded in Phase 1.
+	\item Click \uibutton{Choose File} and select the \texttt{.txt} file you downloaded in Phase 1.
 	\item Click \uibutton{Generate Backup Shares}.
 	\item The system will:
 	      \begin{enumerate}
@@ -803,14 +803,14 @@ When all guardians have completed Phase 2, the Election Admin is notified and Ph
 \begin{enumerate}
 	\item Log in with the Election Admin account (the account that created this election).
 	\item Navigate to the election's \uimenu{Guardian} tab.
-	\item You will see the \textbf{Phase 3: Schedule Election \& Notifications} panel is now active.
+	\item You will see the \textbf{Phase 3: Activation By Admin} panel is now active.
 \end{enumerate}
 
 \screenfig{createElectionSetTimeAndActivateElection.png}{Phase 3 panel --- election scheduling and optional voter notification configuration}
 
 \subsubsection{Step A --- Setting the Election Start and End Times}
 
-The scheduling interface features a \textbf{modern, interactive date-and-time picker} designed for ease and precision:
+The scheduling interface features a \textbf{date-and-time picker} designed for ease and precision:
 
 \begin{enumerate}
 	\item Click the \uifield{Election Start Date \& Time} field. A calendar widget will appear, allowing you to:
@@ -974,7 +974,7 @@ When you create an encrypted ballot for candidates A and B:
 \subsection{Performing the Benaloh Challenge}
 
 \begin{enumerate}
-	\item After creating an encrypted ballot, click \uibutton{Challenge Vote (Benaloh Challenge)}.
+	\item After creating an encrypted ballot, click \uibutton{Challenge Vote} (Benaloh Challenge).
 	\item A selection interface will appear. Select what you believe you voted for.
 
 	      \screenfig{benalohChallengeCorrectSelection.png}{Benaloh Challenge --- entering the correct candidate selection to verify the encryption}
