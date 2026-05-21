@@ -10,6 +10,7 @@
 \usepackage{titlesec}
 \usepackage{titletoc}
 \usepackage{tocloft}
+\usepackage{adjustbox}
 \usepackage{fancyhdr}
 \usepackage{hyperref}
 \usepackage{enumitem}
@@ -153,7 +154,9 @@
 \newcommand{\screenfig}[3][0.92]{%
   \begin{figure}[H]
     \centering
-    \includegraphics[width=#1\linewidth]{figures/#2}
+    \adjustbox{max width=#1\linewidth}{%
+      \includegraphics{figures/#2}%
+    }
     \caption{#3}
     \label{fig:#2}
   \end{figure}%
@@ -770,7 +773,7 @@ If everything is correct, you will see a \textbf{successful verification message
 	\item \faCheckCircle\ \textcolor{successborder}{\textbf{Hash Match}} --- Your ballot was not altered after you submitted it.
 \end{itemize}
 
-This means your vote was counted exactly as you cast it. Congratulations --- you have completed the full end-to-end verification process.
+This means your vote was counted exactly as you cast it. 
 
 \begin{tcolorbox}[dangerbox]
 	\textbf{What if the hash does not match?} If the system reports a hash mismatch, this is a serious indication that your ballot may have been tampered with after submission. Report this immediately to the Election Administrator and your relevant institutional or national election authority. Do not discard your receipt email --- preserve it as evidence.
@@ -807,7 +810,7 @@ Use this chapter as a quick reference card to remind yourself of every step.
 
 \begin{enumerate}
 	\item \textbf{Register} --- Go to the AmarVote URL, click \uibutton{Register}, verify your email with the OTP code, and set a strong password.
-	\item \textbf{Enable 2FA} --- After logging in, click your profile avatar, click \uibutton{Enable Two-Factor Authentication}, scan the QR code with your authenticator app, and confirm.
+	\item \textbf{Enable 2FA} --- After logging in, click your profile avatar, click \uibutton{Turn on} Two-Step Verification, scan the QR code with your authenticator app, and confirm.
 \end{enumerate}
 
 \section{During the Election}
