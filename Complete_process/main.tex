@@ -333,7 +333,7 @@ For adding many users at once:
 \begin{center}
 	\begin{tabularx}{0.95\textwidth}{>{\bfseries}l XXXX}
 		\toprule
-		\rowcolor{primaryblue}\color{white}Capability           & \color{white}Owner                  & \color{white}Admin (App)              & \color{white}User                   \\
+		\rowcolor{primaryblue}\color{white}Capability           & \color{white}Owner                  & \color{white}Admin (App)            & \color{white}User                   \\
 		\midrule
 		\rowcolor{lightgray}Make anyone owner                   & \textcolor{successborder}{\faCheck} & \textcolor{dangerborder}{\faTimes}  & \textcolor{dangerborder}{\faTimes}  \\
 		Demote any owner                                        & \textcolor{successborder}{\faCheck} & \textcolor{dangerborder}{\faTimes}  & \textcolor{dangerborder}{\faTimes}  \\
@@ -1057,7 +1057,7 @@ After successfully casting your ballot, AmarVote will send you an email containi
 \chapter{The Tallying Process}
 \label{ch:tally}
 
-After the election closes, the encrypted ballots must be tallied and then decryptted by the guardians to reveal the final results.
+After the election closes, the encrypted ballots must be tallied and then decrypted by the guardians to reveal the final results.
 
 \section{Overview of the Tally Pipeline}
 
@@ -1084,15 +1084,16 @@ Either the Election Admin or any guardian may start the tally process.
 \begin{enumerate}
 	\item Navigate to the election page after the election has closed.
 
-	      \screenfig{seeElectionTimeline.png}{Viewing the election timeline to confirm the election has closed before initiating the tally}
 
-	\item In the \uimenu{Tally} or \uimenu{Results} tab, click \uibutton{Create/Check Tally}.
+	\item In the upper tab, click \uibutton{Create/Check Tally Status}.
+	\item If the tally has not yet been created, you will see a \uibutton{Create Tally} button. Click it to start the tallying process.
+
 	\item The system will begin processing. This involves:
 	      \begin{itemize}
 		      \item Retrieving all cast encrypted ballots from the database.
 		      \item Dividing them into chunks of approximately 200 ballots each.
 		      \item Computing an encrypted tally for each chunk using homomorphic addition.
-		      \item Combining all chunk tallies into a single encrypted aggregate tally.
+		      \item Store each of the tally chunks back to the database for later decryption.
 	      \end{itemize}
 	\item A progress indicator will display the number of chunks processed vs.\ total.
 	\item When complete, a \textbf{``Tally Complete''} confirmation message is displayed.
@@ -1134,11 +1135,11 @@ This is the final cryptographic phase. The encrypted tally can only be decrypted
 \begin{enumerate}
 	\item Guardians are notified that the tally phase is complete and partial decryption can begin.
 	\item Each guardian navigates to the election page and opens the \uimenu{Guardian} tab.
-	\item Click \uibutton{Upload Encrypted Key File} and select your private key file from Phase 1.
+	\item Click \uibutton{Choose File} and select your private key file from Phase 1.
 
 	      \screenfig{uploadCredentialFileForGuardianDecryption.png}{Uploading the encrypted private key file to begin partial decryption}
 
-	\item Click \uibutton{Submit Credentials \& Decrypt}.
+	\item Click \uibutton{Submit Guardian Credentials}.
 
 	      \screenfig{submitGuardianCredentialsToDecrypt.png}{Submitting guardian credentials to initiate partial decryption}
 
@@ -1183,8 +1184,8 @@ Once at least \emph{quorum} guardians have submitted their partial decryptions:
 
 \begin{enumerate}
 	\item Navigate to the election's \uimenu{Results} tab.
-	\item The \uibutton{Combine Decryption Shares} button will become active.
-	\item Click \uibutton{Combine Decryption Shares}.
+	\item The \uibutton{Combine Partial Decryptions} button will become active.
+	\item Click \uibutton{Combine Partial Decryptions}.
 
 	      \screenfig{combineDecryptionShares.png}{Combining decryption shares to produce the final plaintext tally}
 
@@ -1235,7 +1236,7 @@ After the results are published:
 
 
 
-	\item Click \uimenu{Upload} and upload your ballot receipt you received in the email after your encrypted ballot was cast.
+	\item Click \uibutton{Choose File} and upload your ballot receipt you received in the email after your encrypted ballot was cast.
 
 	      \screenfig{uploadYouBallotReceiptToVerify.png}{Uploading the ballot receipt file to initiate vote verification}
 
@@ -1280,14 +1281,12 @@ All election data (except private keys) is publicly available for independent au
 
 \begin{enumerate}
 	\item Navigate to the election's \uimenu{Verification} tab.
-	\item Click \uibutton{Download Election Data}.
-	\item The download options:
+	\item You can download:
 	      \begin{itemize}
 		      \item All encrypted ballots for chunks
 		      \item Public keys of all guardians
-		      \item The encrypted tally
-		      \item All partial decryptions and proofs
-		      \item The final plaintext results
+		      \item The encrypted tally of different chunks
+		      \item All partial decryptions and proofs of different chunks
 	      \end{itemize}
 \end{enumerate}
 \screenfig{afterElectionVerificationTab.png}{The Verification tab on the election page, available after results are published}
@@ -1307,7 +1306,7 @@ All election data (except private keys) is publicly available for independent au
 No. Your ballot is encrypted using the combined public keys of all guardians before it is stored. Neither the Election Admin nor any App Admin can decrypt individual ballots --- only the aggregate tally can be decrypted, and only with guardian cooperation.
 
 \section*{What if a guardian is unavailable during decryption?}
-If the number of available guardians meets or exceeds the quorum threshold, the election can still be tallied. The backup shares generated during Phase 2 are used to compensate for absent guardians.
+If the number of available guardians meets or exceeds the quorum threshold, the election results can be published. The backup shares generated during Phase 2 are used to compensate for absent guardians.
 
 \section*{Can I vote more than once?}
 No. The system enforces a one-final-ballot-per-voter policy. While you can create and challenge multiple encrypted ballots (for verification purposes), casting your vote is a one-time action.
@@ -1335,7 +1334,7 @@ Immediately notify the Election Admin. If the remaining guardians still meet the
 		Ballot verification                          & Zero-knowledge proofs included with each ballot                             \\
 		\rowcolor{lightgray}Guardian backup          & Encrypted with each guardian's public key                                   \\
 		Transit security                             & HTTPS/TLS (Nginx production configuration + Cloudflare Proxy Configuration) \\
-		\rowcolor{lightgray}Authentication           & JWT tokens + optional TOTP 2FA                                              \\
+		\rowcolor{lightgray}Authentication           & JWT tokens                                                             \\
 		Password hashing                             & bcrypt (Spring Security default)                                            \\
 		\rowcolor{lightgray}Infrastructure           & Docker containers, PostgreSQL, Redis, RabbitMQ                              \\
 		\bottomrule
