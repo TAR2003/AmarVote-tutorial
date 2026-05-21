@@ -248,13 +248,13 @@ AmarVote is built on the \textbf{ElectionGuard} specification developed by Micro
 \begin{center}
 	\begin{tabularx}{0.95\textwidth}{>{\bfseries}l X}
 		\toprule
-		\rowcolor{primaryblue}\color{white}Role & \color{white}Responsibilities                                                                                \\
+		\rowcolor{primaryblue}\color{white}Role & \color{white}Responsibilities                                                                                                                                                                                                                                                                                                      \\
 		\midrule
-		\rowcolor{lightgray}Owner               & Full platform control: manages the authorised-user list, assigns roles, and sets global permissions.                                        \\
-		App Admin                               & A platform-level administrator who can create and manage elections on AmarVote. There can be an unlimited number of App Admins on the platform. \\
+		\rowcolor{lightgray}Owner               & Full platform control: manages the authorised-user list, assigns roles, and sets global permissions.                                                                                                                                                                                                                               \\
+		App Admin                               & A platform-level administrator who can create and manage elections on AmarVote. There can be an unlimited number of App Admins on the platform.                                                                                                                                                                                    \\
 		\rowcolor{lightgray}Election Admin      & The specific user who created a particular election; responsible for configuring, scheduling, and overseeing that election. Each election has exactly one Election Admin. Note: ``Election Admin'' is simply a term used to identify the creator of a specific election --- the user's platform role remains App Admin (or Owner). \\
-		Guardian                                & Participates in the cryptographic key ceremony; holds a share of the decryption key needed to tally results.                               \\
-		\rowcolor{lightgray}Voter               & Registers, receives election access, casts an encrypted ballot, and independently verifies the result.                                      \\
+		Guardian                                & Participates in the cryptographic key ceremony; holds a share of the decryption key needed to tally results.                                                                                                                                                                                                                       \\
+		\rowcolor{lightgray}Voter               & Registers, receives election access, casts an encrypted ballot, and independently verifies the result.                                                                                                                                                                                                                             \\
 		\bottomrule
 	\end{tabularx}
 \end{center}
@@ -333,12 +333,12 @@ For adding many users at once:
 \begin{center}
 	\begin{tabularx}{0.95\textwidth}{>{\bfseries}l XXXX}
 		\toprule
-		\rowcolor{primaryblue}\color{white}Capability           & \color{white}Owner                  & \color{white}App Admin             & \color{white}User                   \\
+		\rowcolor{primaryblue}\color{white}Capability           & \color{white}Owner                  & \color{white}Admin (App)              & \color{white}User                   \\
 		\midrule
 		\rowcolor{lightgray}Make anyone owner                   & \textcolor{successborder}{\faCheck} & \textcolor{dangerborder}{\faTimes}  & \textcolor{dangerborder}{\faTimes}  \\
-		\rowcolor{lightgray}Demote any owner                  & \textcolor{successborder}{\faCheck} & \textcolor{dangerborder}{\faTimes}  & \textcolor{dangerborder}{\faTimes}  \\
-		\rowcolor{lightgray}Manage authorised-user list         & \textcolor{successborder}{\faCheck} & \textcolor{successborder}{\faCheck}  & \textcolor{dangerborder}{\faTimes}  \\
-		Assign roles                                            & \textcolor{successborder}{\faCheck} & \textcolor{successborder}{\faCheck}  & \textcolor{dangerborder}{\faTimes}  \\
+		Demote any owner                                        & \textcolor{successborder}{\faCheck} & \textcolor{dangerborder}{\faTimes}  & \textcolor{dangerborder}{\faTimes}  \\
+		\rowcolor{lightgray}Manage authorised-user list         & \textcolor{successborder}{\faCheck} & \textcolor{successborder}{\faCheck} & \textcolor{dangerborder}{\faTimes}  \\
+		Assign roles                                            & \textcolor{successborder}{\faCheck} & \textcolor{successborder}{\faCheck} & \textcolor{dangerborder}{\faTimes}  \\
 		\rowcolor{lightgray}Create elections (default)          & \textcolor{successborder}{\faCheck} & \textcolor{successborder}{\faCheck} & \textcolor{dangerborder}{\faTimes}  \\
 		Create elections (if granted)                           & \textcolor{successborder}{\faCheck} & \textcolor{successborder}{\faCheck} & \textcolor{successborder}{\faCheck} \\
 		\rowcolor{lightgray}Vote in elections                   & \textcolor{successborder}{\faCheck} & \textcolor{successborder}{\faCheck} & \textcolor{successborder}{\faCheck} \\
@@ -447,11 +447,11 @@ After your account is created, you can enable Two-Factor Authentication (2FA) us
 
 \begin{enumerate}
 	\item Log in to your new account.
-	\item Click your profile avatar in the top-right corner.
+	\item Click your profile in the top-right corner.
 
 	      \screenfig{goToProfileMenu.png}{Accessing the profile menu from the top-right corner}
 
-	\item Click \uibutton{Enable Two-Factor Authentication}. The 2FA setup screen will appear.
+	\item Click \uibutton{Turn on} Two-Step Verification. The 2FA setup screen will appear.
 
 	      \screenfig{enable2FactorAuthentication.png}{The Two-Factor Authentication setup screen, displaying the QR code to scan with your authenticator app}
 
@@ -603,13 +603,12 @@ If you want \emph{any} registered AmarVote user to be able to vote:
 To limit voting to specific individuals:
 
 \begin{enumerate}
-	\item Select \uimenu{Upload Voter List} from the \uifield{Voter List} dropdown.
-	\item Prepare a CSV file with one column: \texttt{email}.\\
+	\item Prepare a CSV file with one column: \texttt{just email addresses}.\\
 	      Example: \texttt{voter1@example.com}, one per row.
 
 	      \screenfignarrow{votersCSVFile.png}{Example voter CSV file format --- one email address per row}
 
-	\item Click \uibutton{Upload Voters CSV} and select your file.
+	\item Click \uibutton{Upload CSV} and select your file.
 	\item Review the voter count displayed after upload.
 \end{enumerate}
 
@@ -626,11 +625,11 @@ Guardians are trusted individuals who each hold a share of the cryptographic key
 \subsection{Uploading the Guardians List}
 
 \begin{enumerate}
-	\item Prepare a CSV file with one column: \texttt{email} (one guardian email per row).
+	\item Prepare a CSV file with one column: \texttt{just email addresses} (one guardian email per row).
 
 	      \screenfignarrow{guardiansCSVFile.png}{Example guardians CSV file format --- one guardian email per row}
 
-	\item Click \uibutton{Upload Guardians CSV} and select your file.
+	\item Click \uibutton{Choose File} and select your file.
 	\item The system will display the total number of guardians detected.
 \end{enumerate}
 
@@ -642,7 +641,7 @@ The \textbf{quorum} is the minimum number of guardians who must cooperate to dec
 
 \begin{enumerate}
 	\item In the \uifield{Quorum} field, enter a number between 1 and the total number of guardians.
-	\item Recommended: set quorum to at least $\lfloor n/2 \rfloor + 1$ where $n$ is the total guardian count (a simple majority plus one).
+	\item Recommended: set quorum to at least $\lfloor n/2 \rfloor + 1$ where $n$ is the total guardian count.
 \end{enumerate}
 
 \begin{tcolorbox}[warnbox]
@@ -686,7 +685,7 @@ By default, each voter may select exactly one candidate. To allow multiple selec
 After filling in all required fields:
 
 \begin{enumerate}
-	\item Review the summary panel on the right side of the form.
+	\item Review all the information given in the page.
 	\item Click \uibutton{Create Election}.
 	\item The system will provision the election and redirect you to the election's management page.
 	\item The election will now show as \textbf{Setup Phase} --- the guardian key ceremony must be completed before the election can go live.
