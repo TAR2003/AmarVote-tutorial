@@ -238,7 +238,7 @@ This guide is written \textbf{specifically for you --- a voter}. You do not need
 AmarVote is a secure online voting platform built on a technology called \textbf{ElectionGuard}. In plain language, this means:
 
 \begin{itemize}
-	\item \textbf{Your vote is encrypted before it is stored at the database} It is never stored in plaintext. Not even the election administrator or AmarVote staff can see how you voted.
+	\item \textbf{Your vote is encrypted before it is stored in the database}. It is never stored in plaintext. Not even the election administrator or AmarVote staff can see how you voted.
 	\item \textbf{You receive a receipt.} After you vote, you get an email with a tracking code that proves your ballot was recorded.
 	\item \textbf{You can verify your vote yourself.} After the election results are published, you can upload your receipt and the system will confirm your ballot was counted --- without anyone ever knowing how you voted.
 \end{itemize}
@@ -470,7 +470,7 @@ Before you begin, install one of these free authenticator apps on your smartphon
 	\item Point your phone's camera at the QR code on your screen. The app will automatically register AmarVote.
 	\item Your app will now show a rotating 6-digit code labelled ``AmarVote'' (or similar).
 	\item Type the current 6-digit code from your app into the \uifield{Verification Code} field on AmarVote.
-	\item Click \uibutton{Confirm}. 2FA is now active on your account.
+	\item Click \uibutton{Confirm and Enable}. 2FA is now active on your account.
 \end{enumerate}
 
 \begin{tcolorbox}[dangerbox]
@@ -611,7 +611,7 @@ After you click \uibutton{Create Encrypted Ballot} and see the confirmation mess
 
 	      \screenfig{benalohChallengeCorrectSelection.png}{The Benaloh Challenge interface --- re-select the same candidates you originally chose}
 
-	\item Click \uibutton{Submit Challenge}.
+	\item Click \uibutton{Challenge Ballot}.
 	\item The system will check whether your stated choice matches the encrypted ballot.
 \end{enumerate}
 
@@ -674,7 +674,7 @@ When you are satisfied that the system is working correctly and are ready to sub
 	\item Click \uibutton{Cast Vote}.
 \end{enumerate}
 
-\screenfig{castEncryptedBallot.png}{Clicking \textit{Cast Ballot} to submit your vote permanently}
+\screenfig{castEncryptedBallot.png}{Clicking \textit{Cast Vote} to submit your vote permanently}
 
 \begin{tcolorbox}[dangerbox]
 	\textbf{This action is permanent and irreversible.} Once you click \uibutton{Cast Vote}, your vote is submitted to the system and \textbf{cannot be changed, recalled, or re-cast}. Make absolutely sure you have selected the right candidate(s) before casting.
@@ -841,7 +841,7 @@ Use this chapter as a quick reference card to remind yourself of every step.
 
 \section*{Can anyone see how I voted?}
 
-No. Your vote is encrypted before it is stored in the database. The database only stores receives an encrypted block of data --- it never stores your actual choice in plaintext.  Only the final tally is ever decrypted, and even that decryption requires the cooperation of multiple trusted guardians using a system called threshold cryptography.
+No. Your vote is encrypted before it is stored in the database. The database only stores an encrypted block of data --- it never stores your actual choice in plaintext.  Only the final tally is ever decrypted, and even that decryption requires the cooperation of multiple trusted guardians using a system called threshold cryptography.
 
 \section*{What is the Benaloh Challenge for? Do I have to do it?}
 

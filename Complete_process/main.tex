@@ -899,7 +899,7 @@ Below the scheduling fields, you will find the \textbf{Send Reminder Email} sect
 \chapter{Voting --- Casting Your Encrypted Ballot}
 \label{ch:voting}
 
-AmarVote uses an \textbf{end-to-end verifiable} voting protocol. Your ballot is encrypted \emph{before} it is stored in the database in encrypted form, the database never stores your vote is plaintext.
+AmarVote uses an \textbf{end-to-end verifiable} voting protocol. Your ballot is encrypted \emph{before} it is stored in the database in encrypted form, the database never stores your vote in plaintext.
 
 \section{Accessing the Voting Booth}
 
@@ -965,7 +965,7 @@ When you create an encrypted ballot for candidates A and B:
 	\item The challenge asks you to \emph{re-enter} your intended vote selection.
 	\item The system checks whether the re-entered selection matches the encrypted ballot.
 	\item If it matches, you receive confirmation that the encryption is correct.
-	\item a mismatch is flagged — this occurs if you entered wrong candidates or if the encryption is faulty (which should never happen in a properly functioning system).
+	\item A mismatch is flagged — this occurs if you entered wrong candidates or if the encryption is faulty (which should never happen in a properly functioning system).
 \end{enumerate}
 
 \begin{tcolorbox}[notebox]
@@ -1031,7 +1031,7 @@ When you are satisfied that the system is working correctly and ready to cast yo
 \screenfig{castEncryptedBallot.png}{Casting the final encrypted ballot --- the irreversible submission step}
 
 \begin{tcolorbox}[dangerbox]
-	\textbf{This action is irreversible.} Once you cast your ballot, it cannot be changed, recalled, or re-cast. Your vote in final.
+	\textbf{This action is irreversible.} Once you cast your ballot, it cannot be changed, recalled, or re-cast. Your vote is final.
 \end{tcolorbox}
 
 \screenfig{cantVoteMultipleTimes.png}{System confirmation that a voter cannot cast more than one final ballot}
@@ -1313,7 +1313,7 @@ If the number of available guardians meets or exceeds the quorum threshold, the 
 No. The system enforces a one-final-ballot-per-voter policy. While you can create and challenge multiple encrypted ballots (for verification purposes), casting your vote is a one-time action.
 
 \section*{Is my identity linked to my ballot?}
-Your voter receipt email contains a Ballot Tracking Code and Hash. Ballot hash mathematically derived from the \emph{encrypted} ballot --- they do not reveal your identity or your vote. The public tally list contains tracking codes but no voter names.
+Your voter receipt email contains a Ballot Tracking Code and Hash. Ballot hash is mathematically derived from the \emph{encrypted} ballot --- they do not reveal your identity or your vote. The public tally list contains tracking codes but no voter names.
 But for your privacy do not share the tracking code or ballot hash with anyone else, as they could be used to identify your encrypted ballot in the public tally. Though the ballot will still be encrypted, it is best practice to keep your receipt information private.
 
 \section*{What is the Benaloh Challenge for?}
