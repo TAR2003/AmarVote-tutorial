@@ -267,6 +267,16 @@ AmarVote is built on the \textbf{ElectionGuard} specification developed by Micro
 % ════════════════════════════════════════════════════════════════════════════
 \mainmatter
 
+% ─── WORKFLOW OVERVIEW (shown before all chapters) ───────────────────────────
+\chapter*{AmarVote Workflow Overview}
+\addcontentsline{toc}{chapter}{AmarVote Workflow Overview}
+
+Before you begin the detailed chapters, the following diagrams provide a high-level map of the complete AmarVote workflow. Use them as a quick reference to see how each phase connects --- from platform setup and election creation through voting, tallying, and verification.
+
+\screenfig{amarvote_workflow_1.png}{AmarVote end-to-end workflow --- Part 1: platform setup, election creation, and guardian key ceremony}
+
+\screenfig{amarvote_workflow_2.png}{AmarVote end-to-end workflow --- Part 2: voting, tallying, decryption, and verification}
+
 % ════════════════════════════════════════════════════════════════════════════
 \part{Platform Foundation}
 
@@ -297,10 +307,9 @@ The Owner maintains a registry of permitted email addresses. Each entry in the l
 
 	      \screenfig{menuSelectAuthenticatedUsers.png}{Selecting \textit{Authenticated Users} from the navigation menu}
 
-	\item Click \uibutton{Add User}.
-	\item Enter the email address in the \uifield{Email} field.
+	\item Enter the email address in the \uifield{Add User Email} field.
 	\item Select the appropriate role from the \uifield{Role} dropdown.
-	\item Click \uibutton{Save}.
+	\item Click \uibutton{Add}.
 \end{enumerate}
 
 \screenfig{authenticateOneUser.png}{Adding an individual user to the Authorised User List}
@@ -318,8 +327,8 @@ For adding many users at once:
 
 	      \screenfignarrow{guardiansCSVFile.png}{Example CSV format for bulk user upload}
 
-	\item Navigate to \uimenu{Authenticated Users} $\to$ \uibutton{Import CSV}.
-	\item Click \uibutton{Choose File} and select your prepared CSV.
+	\item Navigate to \uimenu{Authenticated Users} $\to$ \uibutton{Upload CSV}.
+	\item Click and select your prepared CSV file.
 \end{enumerate}
 
 \screenfig{authenticateUsersWithCSVFileUpload.png}{Bulk importing users via CSV upload}
@@ -414,7 +423,7 @@ Each step is described in detail below, with screenshots corresponding to exactl
 
 	      \screenfig{enterTheVerificationCode.png}{Entering the 6-digit OTP received by email to verify your address}
 
-	\item Click \uibutton{Verify Email}.
+	\item Click \uibutton{Verify Code}.
 	\item If the code is correct and has not expired, you will be automatically advanced to the password setup step.
 \end{enumerate}
 
@@ -892,6 +901,71 @@ Below the scheduling fields, you will find the \textbf{Send Reminder Email} sect
 	After activation, share the election link with your voters so they can bookmark it. The link is visible on the election's main page and is also included automatically in the reminder email body if you enabled one.
 \end{tcolorbox}
 
+% ────────────────────────────────────────────────────────────────────────────
+\section{Editing the Voter List}
+% \label{ch:edit-voters}
+
+After an election has been created and scheduled, the \textbf{Election Admin} (the user who created the election) and any \textbf{assigned guardians} may still modify the voter list --- but only \emph{until the election start time}. Once voting begins, the voter list is locked and can no longer be changed.
+
+\begin{tcolorbox}[notebox]
+	\textbf{Who can edit the voter list?} The Election Admin and guardians assigned to this election. Both roles have the same voter-list editing privileges, and both are subject to the same deadline: all changes must be made before the scheduled election start time.
+\end{tcolorbox}
+
+\subsection{Accessing the Voter List Editor}
+
+\begin{enumerate}
+	\item Log in to AmarVote with an Election Admin or guardian account.
+	\item Navigate to \uimenu{All Elections} and open the election you wish to manage.
+	\item On the election page, locate the \uibutton{Edit Voter List} button.
+
+	      \screenfig{electionPageFindEditVoters.png}{The election management page --- click \textit{Edit Voter List} to open the voter list editor}
+\end{enumerate}
+
+\subsection{Adding and Removing Voters}
+
+The voter list editor allows you to add new voters or remove existing ones at any time before the election begins.
+
+\screenfig{editVoters.png}{The voter list editor --- add voters manually or import a CSV file; remove voters using the cross button next to each email}
+
+\subsubsection{Removing a Voter}
+
+To remove a voter from the list:
+
+\begin{enumerate}
+	\item In the voter list editor, find the voter's email address in the list.
+	\item Click the \textbf{cross (\texttimes{}) button} on the right side of the field containing that voter's email.
+	\item The voter will be removed from the list immediately.
+\end{enumerate}
+
+\subsubsection{Adding Voters Manually}
+
+To add a single voter by email:
+
+\begin{enumerate}
+	\item In the voter list editor, locate the \uifield{Add Voter Email Manually} field.
+	\item Enter the voter's email address.
+	\item Click \uibutton{Add Voter} to add them to the list.
+\end{enumerate}
+
+\subsubsection{Adding Voters via CSV Upload}
+
+To add multiple voters at once:
+
+\begin{enumerate}
+	\item Prepare a CSV or plain-text file with one email address per row (same format as during election creation).
+	\item In the voter list editor, click \uibutton{Import CSV/TXT}.
+	\item Select your prepared file from your computer.
+	\item The system will import all valid email addresses and add them to the voter list.
+\end{enumerate}
+
+\begin{tcolorbox}[warnbox]
+	\textbf{Deadline:} Voter list editing is only available before the election start time. Once the election opens for voting, the voter list is permanently locked --- no further additions or removals are possible.
+\end{tcolorbox}
+
+\begin{tcolorbox}[tipbox]
+	Voters added to the list who do not yet have an AmarVote account will need to register before they can vote. Consider notifying newly added voters in advance, especially if the election start time is approaching.
+\end{tcolorbox}
+
 % ════════════════════════════════════════════════════════════════════════════
 \part{The Voting Process}
 
@@ -919,7 +993,7 @@ AmarVote uses an \textbf{end-to-end verifiable} voting protocol. Your ballot is 
 
 	      \screenfig{findCurrentElectionsInDashboard.png}{Finding current elections directly from the Dashboard}
 
-	\item Open the election page.
+	\item Open the election page by clicking on the Election title you want to vote in.
 	\item Click the \uimenu{Voting Booth} tab.
 \end{enumerate}
 
