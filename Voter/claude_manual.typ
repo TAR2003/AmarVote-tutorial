@@ -1,5 +1,5 @@
 // ============================================================
-//  AMARVOTE — VOTER MANUAL
+//  AmarVote — VOTER MANUAL
 //  A concise, end-to-end guide to registering, voting, and
 //  verifying your ballot on AmarVote.
 // ============================================================
@@ -30,7 +30,7 @@
       grid(
         columns: (1fr, 1fr),
         align(left)[
-          #text(8.3pt, fill: faint, tracking: 0.5pt)[AMARVOTE]
+          #text(8.3pt, fill: faint, tracking: 0.5pt)[AmarVote]
           #text(8.3pt, fill: hairline)[ · ]
           #text(8.3pt, fill: faint)[VOTER MANUAL]
         ],
@@ -267,8 +267,8 @@
       #grid(
         columns: (22pt, auto), column-gutter: 9pt, align: horizon,
         box(width: 22pt, height: 22pt, radius: 6pt, fill: white,
-          align(center+horizon, text(11pt, weight: "black", fill: brand)[A])),
-        text(13pt, weight: "bold", fill: white, tracking: 1pt)[AMARVOTE]
+          align(center+horizon, text(11pt, weight: "black", fill: brand)[🗳️])),
+        text(13pt, weight: "bold", fill: white, tracking: 1pt)[AmarVote]
       )
     ]
 
@@ -401,7 +401,7 @@
 == Verify your voter email
 
 #step("2", "Enter your official email", "Registration_init.png",
-  [Enter the email address listed for you on the official voter roll.
+  [Enter the email address listed for you on the official voter list.
   AmarVote only grants access to addresses already on this list, so
   use the one your election authority has on file — not a personal
   alternative.], side: "right")
@@ -409,7 +409,7 @@
 #callout(kind: "warning")[
   Using an email that isn't on the official voter list will not pass
   verification. If you're unsure which address is registered, contact
-  your election administrator before continuing.
+  your Batch Representative or Election Officials before continuing.
 ]
 
 == Confirm with a one-time code
@@ -502,6 +502,10 @@
   [If you enabled two-factor authentication, enter the current code
   shown in your authenticator app to finish signing in.])
 
+#step("4", "You are in", "Dashboard_ongoing.png",
+  [Active elections you're eligible for appear directly on your
+  dashboard. Click any election card to open it.], side: "right")
+
 == Forgot your password?
 
 #intro[
@@ -510,22 +514,22 @@
   new password.
 ]
 
-#step("1", "Click Forgot Password?", "Forgot_Password_Click.png",
+#step("5", "Click Forgot Password?", "Forgot_Password_Click.png",
   [On the login page, click *Forgot Password?* to start the reset process.])
 
-#step("2", "Enter your registered email", "Forgot_Password_Enter_Email.png",
+#step("6", "Enter your registered email", "Forgot_Password_Enter_Email.png",
   [Enter the email address you used when you registered with AmarVote.],
   side: "right")
 
-#step("3", "Check your inbox", "Forgot_Password_email_Six_Digit_Code.png",
+#step("7", "Check your inbox", "Forgot_Password_email_Six_Digit_Code.png",
   [AmarVote sends a 6-digit code to that email address. Check your inbox —
   and your spam folder if you don't see it right away.])
 
-#step("4", "Enter the code", "Forgot_password_enter_six_digit_code.png",
+#step("8", "Enter the code", "Forgot_password_enter_six_digit_code.png",
   [Type the 6-digit code into the verification field to confirm your identity.],
   side: "right")
 
-#step("5", "Set a new password", "Forgot_Password_Set_New_Password.png",
+#step("9", "Set a new password", "Forgot_Password_Set_New_Password.png",
   [Choose a new password of *at least 12 characters*, combining uppercase
   letters, lowercase letters, numbers, and special characters. Then sign in
   with your new password.])
@@ -538,23 +542,23 @@
 ]
 #v(10pt)
 
-#step("4", "Browse from your dashboard", "Dashboard_ongoing.png",
+#step("10", "Browse from your dashboard", "Dashboard_ongoing.png",
   [Active elections you're eligible for appear directly on your
   dashboard. Click any election card to open it.], side: "right")
 
-#step("5", "Or search by name", "Search_Elections.png",
+#step("11", "Or search by name", "Search_Elections.png",
   [Use the search bar at the top of the page to find an election by
   typing its name.])
 
-#step("6", "Or browse the full directory — open the menu", "Click_Menu_Button.png",
+#step("12", "Or browse the full directory — open the menu", "Click_Menu_Button.png",
   [Click the menu icon in the top-left corner to open the navigation
   panel.], side: "right")
 
-#step("7", "Select \"All Elections\"", "Menu_Click_All_Elections.png",
+#step("13", "Select \"All Elections\"", "Menu_Click_All_Elections.png",
   [Choose *All Elections* from the menu to see every election you can
   take part in.])
 
-#step("8", "Pick your election", "All_Elections.png",
+#step("14", "Pick your election", "All_Elections.png",
   [Browse the complete list and click the election you want to vote
   in.], side: "right")
 
@@ -670,7 +674,7 @@
 
 #step("7", "Download your receipt", "can_Download_the_receipt.png",
   [Download your tracking code and ballot hash. Keep this safe — it's
-  the only way to verify your specific ballot later, and it never
+  necessary to verify your specific ballot later, and it never
   reveals who or what you voted for.])
 
 #step("8", "Check your email too", "ballot_receipt_by_email.png",

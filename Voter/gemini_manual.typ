@@ -189,6 +189,12 @@
 
 #step([Enter your registered email and password.], "Sign_In_AmarVote.png")
 
+
+#step([If you have 2FA enabled, enter the code from your authenticator app.], "Two_Factor_Authentication.png")
+
+#step([You are now in your account and can view the dashboard.], "Dashboard.png")
+
+
 == Forgot Your Password
 
 #step([If you forgot your password, click the *Forgot Password?* option on the login page.], "Forgot_Password_Click.png")
@@ -201,9 +207,6 @@
 
 #step([Set a new password. It must be at least 12 characters and include uppercase, lowercase, digits, and special characters.], "Forgot_Password_Set_New_Password.png")
 
-#step([If you have 2FA enabled, enter the code from your authenticator app.], "Two_Factor_Authentication.png")
-
-#step([You are now in your account and can view the dashboard.], "Dashboard.png")
 
 = 4. Finding Elections
 

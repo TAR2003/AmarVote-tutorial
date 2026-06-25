@@ -248,6 +248,16 @@ When you return to AmarVote, use the Home Page to log in.
 
 #img("Sign_In_AmarVote.png")
 
+
+3. If two‑factor authentication is enabled, you will be prompted for a code.  
+   Enter the 6‑digit code shown in your authenticator app.
+
+#img("Two_Factor_Authentication.png")
+
+4. After successful login, you are back on your Dashboard, ready to vote.
+
+#img("Dashboard.png")
+
 == Forgot Your Password
 
 If you forgot your password, reset it from the login page:
@@ -272,15 +282,6 @@ If you forgot your password, reset it from the login page:
    #text(size: 10pt, fill: gray-mid)[Must be at least 12 characters with uppercase, lowercase, digits & special characters.]
 
 #img("Forgot_Password_Set_New_Password.png")
-
-3. If two‑factor authentication is enabled, you will be prompted for a code.  
-   Enter the 6‑digit code shown in your authenticator app.
-
-#img("Two_Factor_Authentication.png")
-
-4. After successful login, you are back on your Dashboard, ready to vote.
-
-#img("Dashboard.png")
 
 = Finding an Election
 
