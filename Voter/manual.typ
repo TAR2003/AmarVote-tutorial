@@ -538,8 +538,7 @@
   shown in your authenticator app to finish signing in.])
 
 #step("4", "You are in", "Dashboard_ongoing.png",
-  [Active elections you're eligible for appear directly on your
-  dashboard. Click any election card to open it.], side: "right")
+  [You are now signed in. You can browse the platform and cast your vote in any election you are eligible for.], side: "right")
 
 
 == Find your election
