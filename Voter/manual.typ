@@ -49,7 +49,7 @@
       grid(
         columns: (1fr, 1fr),
         align(left, text(8pt, fill: faint)[End-to-end verifiable voting with ElectionGuard SDK]),
-        align(right, text(8pt, fill: faint)[Page #counter(page).display() of #context counter(page).final().first()])
+        align(right, text(8pt, fill: faint)[Voter Documentation · 2026])
       )
     }
   }
