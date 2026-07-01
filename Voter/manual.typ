@@ -352,15 +352,18 @@
   #journey("2", "Secure your account (optional)",
     "Turn on two-factor authentication for an extra layer of protection.",
     "Part 2")
-  #journey("3", "Sign in & find your election",
-    "Log back in anytime, then locate your election by search, menu, or dashboard.",
+  #journey("3", "Sign in & reset your password",
+    "Log back in anytime, or reset your password if you forget.",
     "Part 3")
-  #journey("4", "Cast your ballot",
+  #journey("4", "Find your election",
+    "Locate your election by search, menu, or dashboard.",
+    "Part 4")  
+  #journey("5", "Cast your ballot",
     "Pick candidates, encrypt your choices, optionally audit them, then cast.",
-    "Part 4")
-  #journey("5", "Verify the result",
-    "After the election closes, confirm your exact ballot was counted — by you, independently.",
     "Part 5")
+  #journey("6", "Verify the result",
+    "After the election closes, confirm your exact ballot was counted — by you, independently.",
+    "Part 6")
 
   #v(18pt)
   #grid(
@@ -409,7 +412,7 @@
 #callout(kind: "warning")[
   Using an email that isn't on the official voter list will not pass
   verification. If you're unsure which address is registered, contact
-  your Batch Representative or Election Officials before continuing.
+  your Election Officials before continuing.
 ]
 
 == Confirm with a one-time code
@@ -479,9 +482,9 @@
 
 
 // ============================================================
-//  PART 3 — SIGN IN & FIND YOUR ELECTION
+//  PART 3 — SIGN IN & RESET YOUR PASSWORD
 // ============================================================
-= Sign in & find your election
+= Sign in & reset your password
 
 #intro[
   Once registered, returning to vote is quick. This section also
@@ -534,7 +537,10 @@
   letters, lowercase letters, numbers, and special characters. Then sign in
   with your new password.])
 
-== Find your election
+// =========================================
+// Finding Election
+// ======================
+= Find your election
 
 #text(9.4pt, fill: sub)[
   There are three equally valid ways to reach an election — use
