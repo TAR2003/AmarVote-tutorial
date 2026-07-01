@@ -352,8 +352,8 @@
   #journey("2", "Secure your account (optional)",
     "Turn on two-factor authentication for an extra layer of protection.",
     "Part 2")
-  #journey("3", "Sign in & reset your password",
-    "Log back in anytime, or reset your password if you forget.",
+  #journey("3", "Reset your password",
+    "If you forget your password, reset it by verifying your email address",
     "Part 3")
   #journey("4", "Find your election",
     "Locate your election by search, menu, or dashboard.",
@@ -482,10 +482,42 @@
 
 
 // ============================================================
-//  PART 3 — SIGN IN & RESET YOUR PASSWORD
+//  PART 3 — RESET YOUR PASSWORD
 // ============================================================
-= Sign in & reset your password
+= Reset your password
 
+#intro[
+  If you no longer remember your password, reset it from the login page.
+  You'll verify your registered email, enter a one-time code, and choose a
+  new password.
+]
+
+== Forgot your password?
+
+#step("1", "Click Forgot Password?", "Forgot_Password_Click.png",
+  [On the login page, click *Forgot Password?* to start the reset process.])
+
+#step("2", "Enter your registered email", "Forgot_Password_Enter_Email.png",
+  [Enter the email address you used when you registered with AmarVote.],
+  side: "right")
+
+#step("3", "Check your inbox", "Forgot_Password_email_Six_Digit_Code.png",
+  [AmarVote sends a 6-digit code to that email address. Check your inbox —
+  and your spam folder if you don't see it right away.])
+
+#step("4", "Enter the code", "Forgot_password_enter_six_digit_code.png",
+  [Type the 6-digit code into the verification field to confirm your identity.],
+  side: "right")
+
+#step("5", "Set a new password", "Forgot_Password_Set_New_Password.png",
+  [Choose a new password of *at least 12 characters*, combining uppercase
+  letters, lowercase letters, numbers, and special characters. Then sign in
+  with your new password.])
+
+// =========================================
+// Finding Election
+// ======================
+= Find your election
 #intro[
   Once registered, returning to vote is quick. This section also
   covers the three ways to locate an election: your dashboard, the
@@ -509,38 +541,8 @@
   [Active elections you're eligible for appear directly on your
   dashboard. Click any election card to open it.], side: "right")
 
-== Forgot your password?
 
-#intro[
-  If you no longer remember your password, reset it from the login page.
-  You'll verify your registered email, enter a one-time code, and choose a
-  new password.
-]
-
-#step("5", "Click Forgot Password?", "Forgot_Password_Click.png",
-  [On the login page, click *Forgot Password?* to start the reset process.])
-
-#step("6", "Enter your registered email", "Forgot_Password_Enter_Email.png",
-  [Enter the email address you used when you registered with AmarVote.],
-  side: "right")
-
-#step("7", "Check your inbox", "Forgot_Password_email_Six_Digit_Code.png",
-  [AmarVote sends a 6-digit code to that email address. Check your inbox —
-  and your spam folder if you don't see it right away.])
-
-#step("8", "Enter the code", "Forgot_password_enter_six_digit_code.png",
-  [Type the 6-digit code into the verification field to confirm your identity.],
-  side: "right")
-
-#step("9", "Set a new password", "Forgot_Password_Set_New_Password.png",
-  [Choose a new password of *at least 12 characters*, combining uppercase
-  letters, lowercase letters, numbers, and special characters. Then sign in
-  with your new password.])
-
-// =========================================
-// Finding Election
-// ======================
-= Find your election
+== Find your election
 
 #text(9.4pt, fill: sub)[
   There are three equally valid ways to reach an election — use
@@ -548,29 +550,29 @@
 ]
 #v(10pt)
 
-#step("10", "Browse from your dashboard", "Dashboard_ongoing.png",
+#step("5", "Browse from your dashboard", "Dashboard_ongoing.png",
   [Active elections you're eligible for appear directly on your
   dashboard. Click any election card to open it.], side: "right")
 
-#step("11", "Or search by name", "Search_Elections.png",
+#step("6", "Or search by name", "Search_Elections.png",
   [Use the search bar at the top of the page to find an election by
   typing its name.])
 
-#step("12", "Or browse the full directory — open the menu", "Click_Menu_Button.png",
+#step("7", "Or browse the full directory — open the menu", "Click_Menu_Button.png",
   [Click the menu icon in the top-left corner to open the navigation
   panel.], side: "right")
 
-#step("13", "Select \"All Elections\"", "Menu_Click_All_Elections.png",
+#step("8", "Select \"All Elections\"", "Menu_Click_All_Elections.png",
   [Choose *All Elections* from the menu to see every election you can
   take part in.])
 
-#step("14", "Pick your election", "All_Elections.png",
+#step("9", "Pick your election", "All_Elections.png",
   [Browse the complete list and click the election you want to vote
   in.], side: "right")
 
 
 // ============================================================
-//  PART 4 — CAST YOUR BALLOT
+//  PART 5 — CAST YOUR BALLOT
 // ============================================================
 = Cast your ballot
 
@@ -692,7 +694,7 @@
 
 
 // ============================================================
-//  PART 5 — VERIFY THE RESULT
+//  PART 6 — VERIFY THE RESULT
 // ============================================================
 = Verify the result
 
