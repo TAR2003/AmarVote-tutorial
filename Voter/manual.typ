@@ -534,7 +534,7 @@
   side: "right")
 
 #step("3", "Confirm with your authenticator", "Two_Step_Verification.png",
-  [If you enabled two-ste verification, enter the current code
+  [If you enabled two-step verification, enter the current code
   shown in your authenticator app to finish signing in.])
 
 #step("4", "You are in", "Dashboard_ongoing.png",
@@ -601,8 +601,7 @@
 
 #step("4", "Select candidates and encrypt", "create_encrypted_ballot.png",
   [Select up to the number of candidates allowed for this election,
-  then click *Create Encrypted Ballot*. Your choices are encrypted
-  immediately on the server, no plain text choice are stored in the database],
+  then click *Create Encrypted Ballot*. Your choices are encrypted before being stored in the database, so no plaintext choices are stored in the database.],
   side: "right", imgw: 38%)
 
 == Choose what happens next
@@ -652,7 +651,7 @@
   Challenging lets you prove an encrypted ballot truly matches the
   choices you made — without revealing your vote to anyone else.
   Click *Challenge Vote*, then re-select the candidates to check
-  against.
+  against. Challenge is a practice verification step done *before* casting. It lets you check that encryption was honest. Challenged ballots are never counted.
 ]
 #v(6pt)
 #step("8", "Select Challenge Vote", "click_Challenge.png",
@@ -717,7 +716,7 @@
 
 #step("3", "Upload your receipt", "Verify_your_ballot_tab_upload.png",
   [Go to the *Verify Your Vote* tab and upload the receipt file you
-  saved earlier.])
+  saved earlier or received in your email.])
 
 #step("4", "Confirm the match", "successful_ballot_receipt_verification.png",
   [AmarVote locates the ballot in the public tally with your exact
