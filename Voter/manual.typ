@@ -613,7 +613,33 @@
   discarding never submits a vote.
 ]
 
-== Optional: challenge your ballot
+
+== Cast your vote
+
+#triple(
+  "From encryption to receipt",
+  "When you're satisfied with your ballot, cast it to submit your vote and receive proof of submission.",
+  "create_encrypted_ballot.png", "Click_Cast_vote.png", "show_the_receipt.png",
+  ("1. Encrypt your ballot", "2. Cast your vote", "3. Get your receipt"),
+  ("READY", "SUBMIT", "RECEIPT ISSUED"),
+  ok: true,
+  [*Your vote is cast.* AmarVote returns a unique tracking code and
+  ballot hash — your personal proof that this exact ballot was
+  received.]
+)
+
+== Save your receipt
+
+#step("6", "Download your receipt", "can_Download_the_receipt.png",
+  [Download your tracking code and ballot hash. Keep this safe — it's
+  necessary to verify your specific ballot later, and it never
+  reveals who or what you voted for.])
+
+#step("7", "Check your email too", "ballot_receipt_by_email.png",
+  [AmarVote also sends a copy of your receipt to your registered
+  email, so you have a backup record.], side: "right")
+
+== Optional: Challenge your vote
 
 #text(9.4pt, fill: sub)[
   Challenging lets you prove an encrypted ballot truly matches the
@@ -622,7 +648,7 @@
   against.
 ]
 #v(6pt)
-#step("6", "Re-select to challenge", "click_Challenge.png",
+#step("8", "Select Challenge Vote", "click_Challenge.png",
   [Choose the candidates you want to check the encrypted ballot
   against, then challenge the ballot.], imgw: 36%)
 
@@ -656,30 +682,7 @@
   to vote for real.
 ]
 
-== Cast your vote
 
-#triple(
-  "From encryption to receipt",
-  "When you're satisfied with your ballot, cast it to submit your vote and receive proof of submission.",
-  "create_encrypted_ballot.png", "Click_Cast_vote.png", "show_the_receipt.png",
-  ("1. Encrypt your ballot", "2. Cast your vote", "3. Get your receipt"),
-  ("READY", "SUBMIT", "RECEIPT ISSUED"),
-  ok: true,
-  [*Your vote is cast.* AmarVote returns a unique tracking code and
-  ballot hash — your personal proof that this exact ballot was
-  received.]
-)
-
-== Save your receipt
-
-#step("7", "Download your receipt", "can_Download_the_receipt.png",
-  [Download your tracking code and ballot hash. Keep this safe — it's
-  necessary to verify your specific ballot later, and it never
-  reveals who or what you voted for.])
-
-#step("8", "Check your email too", "ballot_receipt_by_email.png",
-  [AmarVote also sends a copy of your receipt to your registered
-  email, so you have a backup record.], side: "right")
 
 
 // ============================================================
