@@ -314,7 +314,7 @@
 #page(margin: (top: 2.4cm, bottom: 2cm, left: 2cm, right: 2cm))[
   #text(10pt, weight: "medium", fill: brand, tracking: 1.5pt)[YOUR JOURNEY]
   #v(5pt)
-  #text(21pt, weight: "black", fill: ink)[Five steps, start to finish]
+  #text(21pt, weight: "black", fill: ink)[Six steps, start to finish]
   #v(4pt)
   #text(9.8pt, fill: sub)[
     Everything in this manual fits into one simple path. Jump to any
@@ -350,7 +350,7 @@
     "Verify your voter email, confirm a one-time code, and set a strong password.",
     "Part 1")
   #journey("2", "Secure your account (optional)",
-    "Turn on two-factor authentication for an extra layer of protection.",
+    "Turn on two-step verification for an extra layer of protection.",
     "Part 2")
   #journey("3", "Reset your password",
     "If you forget your password, reset it by verifying your email address",
@@ -452,7 +452,7 @@
 = Secure your account
 
 #intro[
-  Two-factor authentication (2FA) is optional but strongly recommended.
+  Two-step verification is optional but strongly recommended.
   It adds a second, time-based code on top of your password, so a
   leaked password alone isn't enough to sign in as you.
 ]
@@ -463,7 +463,7 @@
   [From your dashboard, click your *profile icon* in the top-right
   corner to open your account settings.])
 
-== Turn on two-factor authentication
+== Turn on two-step verification
 
 #step("2", "Enable two-step verification", "Turn_On_Click.png",
   [In the *Two-Step Verification* panel, click *Turn On* to begin
@@ -475,7 +475,7 @@
   it generates to confirm the link.])
 
 #callout(kind: "success")[
-  Two-factor authentication is now active on your account. From your
+  Two-step verification is now active on your account. From your
   next login onward, you'll need both your password and a fresh code
   from your authenticator app.
 ]
@@ -533,8 +533,8 @@
   [Enter the email and password you registered with, then continue.],
   side: "right")
 
-#step("3", "Confirm with your authenticator", "Two_Factor_Authentication.png",
-  [If you enabled two-factor authentication, enter the current code
+#step("3", "Confirm with your authenticator", "Two_Step_Verification.png",
+  [If you enabled two-ste verification, enter the current code
   shown in your authenticator app to finish signing in.])
 
 #step("4", "You are in", "Dashboard_ongoing.png",
